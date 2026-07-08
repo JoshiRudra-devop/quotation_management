@@ -1,0 +1,904 @@
+/* theme.css - Global Light Mode Overrides & Scrollbar Removal */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+    --font-head: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* Enforce a single font-family across the entire application (this file is the
+   sole source of truth for --font-head/--font-body — do not redeclare elsewhere) */
+html, body {
+    font-family: var(--font-body) !important;
+    font-size: var(--text-base);
+    overflow-x: hidden !important; /* Prevent right-left horizontal scroll */
+}
+
+h1, h2, h3, h4, h5, h6, .company-name {
+    font-family: var(--font-head) !important;
+}
+
+input, select, textarea, button {
+    font-family: var(--font-body) !important;
+}
+
+/* Hide scrollbars globally across the entire application for all elements and browsers */
+html, body, * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+:root.light-mode,
+html.light-mode {
+    /* Neutrals (light mode) */
+    --bg:           #edf7f5 !important;
+    --surface:      #ffffff !important;
+    --surface2:     #ffffff !important;
+    --surface3:     #f4fafa !important;
+    --surface4:     #e8f4f2 !important;
+    --border:       #ccfbf1 !important;
+    --text:         #022c22 !important;
+    --text-muted:   #0f766e !important;
+    --text-faint:   #5eead4 !important;
+    --teal-border:  #99f6e4 !important;
+    --shadow-card:  var(--shadow-md) !important;
+
+    --bg-gradient:  linear-gradient(135deg, #edf7f5 0%, #e8f4f2 100%) !important;
+    --card-gradient: var(--surface) !important;
+
+    /* Accent (light mode) */
+    --teal: #045c4a !important; /* Dark Green from user screenshot */
+    --teal-hover: #014d40 !important; 
+    --teal-dim: rgba(4, 92, 74, 0.12) !important;
+    --teal-glow: rgba(4, 92, 74, 0.15) !important;
+
+    /* Shadow elevation ladder (light mode) */
+    --shadow-xs: 0 1px 2px rgba(4, 92, 74,.04) !important;
+    --shadow-sm: 0 2px 8px rgba(4, 92, 74,.06) !important;
+    --shadow-md: 0 4px 16px rgba(4, 92, 74,.08) !important;
+    --shadow-lg: 0 12px 32px rgba(4, 92, 74,.12) !important;
+}
+
+/* Base Overrides */
+html.light-mode body {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    background-attachment: fixed !important;
+}
+
+/* Glassmorphism Defaults */
+html.light-mode .stat-card,
+html.light-mode .qt-card,
+html.light-mode .product-container,
+html.light-mode .company-card,
+html.light-mode .modal-content,
+html.light-mode .form-container,
+html.light-mode .tab-content.active,
+html.light-mode .sidebar {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 8px 32px 0 rgba(4, 92, 74, 0.05) !important;
+}
+
+/* Header completely solid dark green */
+html.light-mode .header {
+    background: var(--teal) !important;
+    border-bottom: none !important;
+    box-shadow: 0 4px 15px rgba(4, 92, 74, 0.15) !important;
+}
+
+html.light-mode .header * {
+    color: #ffffff !important;
+}
+
+html.light-mode .header .header-user-welcome {
+    color: #ccfbf1 !important;
+}
+
+html.light-mode .header .header-user-welcome strong {
+    color: #ffffff !important;
+}
+
+/* Bottom Navigation overrides for Mobile */
+html.light-mode .bottom-nav {
+    background: #ffffff !important;
+    border-top: 1px solid var(--border) !important;
+}
+
+html.light-mode .bnav-tray-link {
+    color: var(--text-muted) !important;
+}
+
+html.light-mode .bnav-tray-link.active,
+html.light-mode .bnav-tray-link:hover {
+    color: var(--teal) !important;
+    background: var(--bg) !important;
+}
+
+/* Sidebar Overrides */
+html.light-mode .sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light-mode .sidebar-brand {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+html.light-mode .sidebar-brand .brand-name {
+    color: #ffffff !important;
+}
+
+html.light-mode .sidebar-tagline {
+    color: #ccfbf1 !important;
+}
+
+html.light-mode .CompDetails {
+    background: #f1f5f9 !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-mode .company-name {
+    color: var(--teal) !important;
+}
+
+html.light-mode .discription {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-mode nav li a {
+    color: #475569 !important;
+}
+
+html.light-mode nav li a:hover,
+html.light-mode nav li a.active {
+    background-color: #f1f5f9 !important;
+    color: var(--teal) !important;
+    border-color: var(--teal-border) !important;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08) !important;
+}
+
+html.light-mode .profile {
+    background: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light-mode .profile_username {
+    color: var(--teal) !important;
+}
+
+html.light-mode .profile_email {
+    color: #64748b !important;
+}
+
+html.light-mode .sidebar-profile-info .sidebar-profile-name {
+    color: #0f172a !important;
+}
+
+html.light-mode .sidebar-profile-info .sidebar-profile-email {
+    color: #475569 !important;
+}
+
+html.light-mode .sidebar-profile {
+    background: #f8fafc !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Main Content elements */
+html.light-mode .header-user-welcome {
+    color: #64748b !important;
+}
+
+html.light-mode .header-user-welcome strong {
+    color: var(--teal) !important;
+}
+
+/* Hover states for cards */
+html.light-mode .company-card:hover,
+html.light-mode .product-container:hover {
+    border-color: var(--teal) !important;
+    box-shadow: 0 10px 30px rgba(4, 92, 74, 0.12) !important;
+}
+
+html.light-mode .company-card h3 {
+    color: #0f172a !important;
+}
+
+html.light-mode .company-card p {
+    color: #475569 !important;
+}
+
+html.light-mode .company-card strong {
+    color: var(--teal) !important;
+}
+
+html.light-mode .product-title {
+    color: #0f172a !important;
+}
+
+html.light-mode .product-description {
+    color: #475569 !important;
+}
+
+/* Removed duplicate qt-card definition */
+
+html.light-mode .no-results {
+    color: #64748b !important;
+}
+
+html.light-mode .dashboard-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #1e293b !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02) !important;
+}
+
+html.light-mode .dashboard-card h3 {
+    color: #64748b !important;
+}
+
+html.light-mode .dashboard-card .value {
+    color: #0f172a !important;
+}
+
+/* Invoice Form & Table Overrides in Light Mode */
+html.light-mode #invoiceTable {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+html.light-mode #invoiceTable th,
+html.light-mode #modalProductsTable th {
+    background: #e8f4f1 !important;
+    color: var(--teal) !important;
+    border-bottom: 1px solid var(--teal-border) !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 12px 10px !important;
+}
+
+html.light-mode #invoiceTable td {
+    border: 1px solid var(--teal-border) !important;
+    color: #334155 !important;
+}
+
+html.light-mode #invoiceTable input {
+    color: #0f172a !important;
+}
+
+html.light-mode #invoiceTable input:focus {
+    background: #ffffff !important;
+    border-color: var(--teal) !important;
+}
+
+html.light-mode #invoiceTable input[readonly] {
+    background: #f8fafc !important;
+    color: #64748b !important;
+}
+
+html.light-mode .form-group label {
+    color: #475569 !important;
+}
+
+html.light-mode .form-group input,
+html.light-mode .form-group select,
+html.light-mode .form-group textarea {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    color: #0f172a !important;
+}
+
+html.light-mode .product-form {
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(4,92,74,.05) !important;
+    border: 1px solid var(--teal-border) !important;
+}
+
+html.light-mode .user-info-bar {
+    background: var(--teal) !important;
+    border-bottom: 1px solid var(--teal-border) !important;
+    border-left: 1px solid var(--teal-border) !important;
+    box-shadow: 0 4px 15px rgba(4,92,74,0.1) !important;
+}
+
+html.light-mode .user-info-bar .user-welcome {
+    color: #ffffff !important;
+}
+
+html.light-mode .form-group input:focus,
+html.light-mode .form-group select:focus,
+html.light-mode .form-group textarea:focus {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px rgba(4, 92, 74, 0.1) !important;
+}
+
+html.light-mode .form-group input[readonly],
+html.light-mode .form-group textarea[readonly] {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+/* Modals */
+html.light-mode .modal-content {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 12px 40px rgba(4, 92, 74, 0.15) !important;
+}
+
+html.light-mode .modal-content h2 {
+    color: var(--teal) !important;
+}
+
+/* Modal Products Table Specific Overrides (header handled above) */
+html.light-mode #modalProductsTable td {
+    color: #1e293b !important;
+    border-bottom: 1px solid var(--teal-border) !important;
+}
+
+html.light-mode #modalProductsTable tr:hover {
+    background: #f2f8f7 !important;
+}
+
+html.light-mode #modalProductSearch {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    color: #0f172a !important;
+}
+
+html.light-mode .close {
+    color: #64748b !important;
+}
+
+html.light-mode .close:hover {
+    color: #000000 !important;
+}
+
+/* User Info Bar */
+html.light-mode .user-info-bar {
+    background: rgba(13, 148, 136, 0.06) !important;
+    border-bottom: 1px solid rgba(13, 148, 136, 0.12) !important;
+}
+
+html.light-mode .user-welcome {
+    color: #0f172a !important;
+}
+
+html.light-mode .user-email {
+    color: #475569 !important;
+}
+
+html.light-mode .close-sidebar-btn {
+    color: #334155 !important;
+}
+
+/* Buttons in Light Mode */
+html.light-mode .edit-btn {
+    background: var(--teal) !important;
+    color: #ffffff !important;
+    border-color: var(--teal) !important;
+}
+
+html.light-mode .edit-btn:hover {
+    background: var(--teal-hover) !important;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
+}
+
+html.light-mode .save-btn {
+    background: var(--teal) !important;
+    color: #ffffff !important;
+}
+
+html.light-mode .save-btn:hover {
+    background: var(--teal-hover) !important;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
+}
+
+html.light-mode .cancel-btn {
+    background: #e2e8f0 !important;
+    color: #475569 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+html.light-mode .cancel-btn:hover {
+    background: #cbd5e1 !important;
+}
+
+html.light-mode .product-image {
+    background: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light-mode .product-container:hover .product-image {
+    border-color: var(--teal) !important;
+}
+
+html.light-mode .product-image-placeholder {
+    background: linear-gradient(45deg, #f1f5f9, #e2e8f0) !important;
+    color: var(--teal) !important;
+}
+
+html.light-mode .no-products-message {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #475569 !important;
+}
+
+html.light-mode .tab-btn {
+    color: #64748b !important;
+}
+
+html.light-mode .tab-btn:hover {
+    color: var(--teal) !important;
+}
+
+html.light-mode .tab-btn.active {
+    color: var(--teal) !important;
+}
+
+html.light-mode .search-bar input {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light-mode .search-bar input:focus {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1) !important;
+}
+
+html.light-mode .product-price {
+    background: linear-gradient(45deg, var(--teal), #00bfa5) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Sidebar Overlay Style for Mobile Menu */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1500;
+    backdrop-filter: blur(3px);
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* App Shell Navigation - Light Mode Overrides */
+html.light-mode body {
+    background: var(--bg-gradient) !important;
+    background-color: #edf4f3 !important;
+    color: #111827 !important;
+}
+
+html.light-mode .app-topbar {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.9) 0%, rgba(13, 148, 136, 0.95) 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25) !important;
+}
+
+html.light-mode .topbar-page-title {
+    color: #ffffff !important;
+    font-size: 22px !important;
+    letter-spacing: -0.5px !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+html.light-mode .topbar-crumb {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html.light-mode .topbar-icon-btn {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+html.light-mode .topbar-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+html.light-mode .bottom-nav {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 -4px 30px rgba(4, 92, 74, 0.08) !important;
+}
+
+html.light-mode .bnav-item {
+    color: var(--teal) !important;
+    opacity: 0.75 !important;
+    font-weight: 700 !important;
+}
+
+html.light-mode .bnav-item:hover,
+html.light-mode .bnav-item.active {
+    color: var(--teal) !important;
+    background: #e9f2f0 !important;
+    opacity: 1 !important;
+}
+
+html.light-mode .bnav-item.active::after {
+    display: none !important;
+}
+
+html.light-mode .bnav-center-ring {
+    background: var(--teal) !important;
+    box-shadow: 0 4px 15px rgba(4,92,74, 0.25), 0 0 0 4px #ffffff !important;
+}
+
+html.light-mode .bnav-center-ring .bnav-icon {
+    color: #ffffff !important;
+}
+
+html.light-mode .bnav-center:hover .bnav-center-ring {
+    box-shadow: 0 6px 20px rgba(4,92,74, 0.4), 0 0 0 4px #ffffff !important;
+}
+
+html.light-mode .bnav-center .bnav-label {
+    color: var(--teal) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+html.light-mode .bnav-more-backdrop {
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+
+html.light-mode .modal {
+    background: rgba(255, 255, 255, 0.7) !important;
+}
+
+html.light-mode .bnav-more-tray {
+    background: #ffffff !important;
+    border-top-color: rgba(13, 148, 136, 0.15) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light-mode .bnav-tray-handle {
+    background: rgba(13, 148, 136, 0.15) !important;
+}
+
+html.light-mode .bnav-tray-user {
+    background: #f8fafc !important;
+    border-color: rgba(13, 148, 136, 0.1) !important;
+}
+
+html.light-mode .bnav-tray-user:hover {
+    background: #f1f5f9 !important;
+}
+
+html.light-mode .bnav-tray-avatar {
+    border-color: var(--teal) !important;
+}
+
+html.light-mode .bnav-tray-name {
+    color: #0f172a !important;
+}
+
+html.light-mode .bnav-tray-email {
+    color: #64748b !important;
+}
+
+html.light-mode .bnav-tray-chevron {
+    color: #64748b !important;
+}
+
+html.light-mode .bnav-tray-section-label {
+    color: #94a3b8 !important;
+}
+
+html.light-mode .bnav-tray-grid-item {
+    background: #f8fafc !important;
+    border-color: rgba(13, 148, 136, 0.1) !important;
+    color: #334155 !important;
+}
+
+html.light-mode .bnav-tray-grid-item:hover {
+    background: #f1f5f9 !important;
+    border-color: var(--teal) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light-mode .bnav-tray-link {
+    color: #334155 !important;
+}
+
+html.light-mode .bnav-tray-link svg {
+    color: #64748b !important;
+}
+
+html.light-mode .bnav-tray-link:hover {
+    background: rgba(13, 148, 136, 0.06) !important;
+    color: var(--teal) !important;
+}
+
+html.light-mode .bnav-tray-link:hover svg {
+    color: var(--teal) !important;
+}
+
+html.light-mode .bnav-tray-link.active {
+    background: rgba(13, 148, 136, 0.06) !important;
+    color: var(--teal) !important;
+}
+
+html.light-mode .bnav-tray-link.active svg {
+    color: var(--teal) !important;
+}
+
+html.light-mode .bnav-tray-divider {
+    background: rgba(13, 148, 136, 0.1) !important;
+}
+
+/* Dashboard Components Light Mode */
+html.light-mode .dash-welcome {
+    background: linear-gradient(135deg, rgba(45,212,191,.15) 0%, #ffffff 70%) !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+}
+html.light-mode .dash-welcome-name { color: #0f172a !important; }
+html.light-mode .dash-welcome-greeting { color: #64748b !important; }
+html.light-mode .dash-welcome-new { color: #ffffff !important; }
+
+html.light-mode .skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%) !important;
+    background-size: 200% 100% !important;
+}
+
+html.light-mode .empty-state h3 { color: #0f172a !important; }
+html.light-mode .empty-state p { color: #475569 !important; }
+/* Eliminate all black/dark elements in Light Mode */
+html.light-mode .bnav-center-ring .bnav-icon,
+html.light-mode .add-btn,
+html.light-mode .btn-teal,
+html.light-mode .btn-primary,
+html.light-mode .dash-welcome-new,
+html.light-mode .save-btn,
+html.light-mode .qt-open-btn,
+html.light-mode .action-btn,
+html.light-mode .delete-btn:hover,
+html.light-mode .edit-btn:hover,
+html.light-mode .wizard-btn {
+    color: #ffffff !important;
+}
+
+html.light-mode .dash-welcome-avatar svg circle[fill="#000"],
+html.light-mode .dash-welcome-avatar svg path[fill="#000"],
+html.light-mode .bnav-tray-avatar svg circle[fill="#000"],
+html.light-mode .bnav-tray-avatar svg path[fill="#000"] {
+    fill: #ffffff !important;
+}
+
+/* Premium Page Overrides */
+html.light-mode .current-plan,
+html.light-mode .plan-card {
+    background: #ffffff !important;
+    border-color: var(--teal-border) !important;
+    box-shadow: 0 4px 15px rgba(4,92,74, 0.05) !important;
+}
+
+html.light-mode .plan-card.featured {
+    background: #f4f8f7 !important;
+    border-color: var(--teal) !important;
+}
+
+html.light-mode .plan-card h3 {
+    color: #0f172a !important;
+}
+
+html.light-mode .plan-price {
+    color: var(--teal) !important;
+}
+
+html.light-mode .plan-card p,
+html.light-mode .plan-features li {
+    color: #475569 !important;
+}
+
+html.light-mode .header p {
+    color: #64748b !important;
+}
+
+/* Dedicated Quotation Action Bar */
+.form-action-bar-new {
+  position: fixed;
+  bottom: var(--bnav-h);
+  left: 0;
+  right: 0;
+  background: #f8fafc;
+  border-top: 1px solid var(--teal-border);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 990;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+}
+
+html.light-mode .form-action-bar-new {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 -4px 30px rgba(4, 92, 74, 0.08) !important;
+}
+
+.action-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: #045c4a;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #cbd5e1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.action-bar-right {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action .icon {
+  font-size: 14px;
+}
+
+.btn-preview, .btn-print {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+.btn-preview:hover, .btn-print:hover {
+  background: #cbd5e1;
+}
+
+.btn-share {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+.btn-share:hover {
+  background: #bae6fd;
+}
+
+.btn-save {
+  background: #045c4a;
+  color: #ffffff;
+}
+.btn-save:hover {
+  background: #023d31;
+}
+
+@media (max-width: 768px) {
+  .form-action-bar-new {
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px;
+  }
+  .action-bar-right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-action {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }
+}
+/* Liquid Glass Button Hover Effects */
+html.light-mode .add-btn,
+html.light-mode .btn-action,
+html.light-mode .save-btn,
+html.light-mode .login-btn,
+html.light-mode .qt-open-btn,
+html.light-mode .bnav-center-ring,
+html.light-mode .form-action-btn {
+    position: relative;
+    overflow: hidden;
+    background: rgba(4, 92, 74, 0.85) !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+}
+
+html.light-mode .add-btn:hover,
+html.light-mode .btn-action:hover,
+html.light-mode .save-btn:hover,
+html.light-mode .login-btn:hover,
+html.light-mode .qt-open-btn:hover,
+html.light-mode .bnav-center-ring:hover,
+html.light-mode .form-action-btn:hover {
+    background: rgba(4, 92, 74, 0.85) !important;
+}
+
+html.light-mode .add-btn::before,
+html.light-mode .btn-action::before,
+html.light-mode .save-btn::before,
+html.light-mode .login-btn::before,
+html.light-mode .qt-open-btn::before,
+html.light-mode .bnav-center-ring::before,
+html.light-mode .form-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: all 0.6s ease;
+}
+
+html.light-mode .add-btn:hover::before,
+html.light-mode .btn-action:hover::before,
+html.light-mode .save-btn:hover::before,
+html.light-mode .login-btn:hover::before,
+html.light-mode .qt-open-btn:hover::before,
+html.light-mode .bnav-center-ring:hover::before,
+html.light-mode .form-action-btn:hover::before {
+    left: 200%;
+}
+
+/* Main Container Wrapper */
+html.light-mode .main-content {
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 10px 40px rgba(4, 92, 74, 0.08) !important;
+    margin: 24px 24px 100px 24px !important; /* Bottom margin for nav bar, side margins for breathing room */
+    max-width: none !important;
+    width: calc(100% - 48px) !important; /* Exactly 100% minus the left/right 24px margins */
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 768px) {
+    html.light-mode .main-content {
+        margin: 12px 12px 100px 12px !important;
+        padding: 16px !important;
+        border-radius: 12px !important;
+    }
+}

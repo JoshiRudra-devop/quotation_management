@@ -1,0 +1,17 @@
+{
+  "name": "QuaTation - Quotation Management System",
+  "short_name": "QuaTation",
+  "description": "GST-compliant quotation and invoicing management for Indian B2B businesses",
+  "start_url": "home.php",
+  "display": "standalone",
+  "background_color": "#070a0a",
+  "theme_color": "#2dd4bf",
+  "icons": [
+    {
+      "src": "Logo.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
