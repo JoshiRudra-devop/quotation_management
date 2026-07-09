@@ -41,10 +41,10 @@ if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['SERVER_NAME'] === 'localh
     $DB_NAME = "quotation_managment";
 } else {
     // INFINITYFREE LIVE CREDENTIALS (You must fill these in!)
-    $DB_HOST = "YOUR_INFINITYFREE_DB_HOST"; // e.g., sql123.infinityfree.com
-    $DB_USER = "YOUR_INFINITYFREE_DB_USER"; // e.g., if0_12345678
-    $DB_PASS = "YOUR_INFINITYFREE_DB_PASS"; // Your vPanel Password
-    $DB_NAME = "YOUR_INFINITYFREE_DB_NAME"; // e.g., if0_12345678_quotation
+    $DB_HOST = "sql204.infinityfree.com"; // e.g., sql123.infinityfree.com
+    $DB_USER = "if0_42372422"; // e.g., if0_12345678
+    $DB_PASS = "123InfoTech"; // Your vPanel Password
+    $DB_NAME = "if0_42372422_quotation_managment"; // e.g., if0_12345678_quotation
 }
 
 // Create mysqli connection
