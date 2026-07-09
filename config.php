@@ -32,11 +32,20 @@ function icon($name, $size = 18) {
     return '<svg viewBox="0 0 24 24" width="' . (int)$size . '" height="' . (int)$size . '" fill="' . $fill . '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.2em;flex-shrink:0;">' . $paths[$name] . '</svg>';
 }
 
-// Database credentials (consider moving to environment variables in production)
-$DB_HOST = "localhost";
-$DB_USER = "root";
-$DB_PASS = "";
-$DB_NAME = "quotation_managment";
+// Database credentials
+if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['SERVER_NAME'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], '192.168') !== false) {
+    // LOCAL XAMPP CREDENTIALS
+    $DB_HOST = "localhost";
+    $DB_USER = "root";
+    $DB_PASS = "";
+    $DB_NAME = "quotation_managment";
+} else {
+    // INFINITYFREE LIVE CREDENTIALS (You must fill these in!)
+    $DB_HOST = "YOUR_INFINITYFREE_DB_HOST"; // e.g., sql123.infinityfree.com
+    $DB_USER = "YOUR_INFINITYFREE_DB_USER"; // e.g., if0_12345678
+    $DB_PASS = "YOUR_INFINITYFREE_DB_PASS"; // Your vPanel Password
+    $DB_NAME = "YOUR_INFINITYFREE_DB_NAME"; // e.g., if0_12345678_quotation
+}
 
 // Create mysqli connection
 function db_connect() {
