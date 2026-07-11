@@ -195,15 +195,12 @@ html.light-mode .loader-overlay {
 </div>
 
 <script>
-// Fade out the splash loader when the page finishes loading
-window.addEventListener('load', () => {
+// Fade out the splash loader instantly when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('globalSplashLoader');
     if (loader) {
-        // slight delay to ensure smooth transition feeling
-        setTimeout(() => {
-            loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
-        }, 150);
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
     }
 });
 
@@ -307,7 +304,7 @@ window.addEventListener('load', () => {
                 
                 setTimeout(() => {
                     window.location.reload();
-                }, 800); // Give user time to see the glassy animation before reload
+                }, 100);
             } else {
                 // Not pulled far enough, cancel
                 splashOverlay.classList.remove('ptr-dragging');
