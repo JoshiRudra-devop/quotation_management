@@ -62,8 +62,6 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
         const nativeStyles = document.createElement('style');
         nativeStyles.textContent = `
             html, body {
-                /* Prevent pull-to-refresh bouncy effect */
-                overscroll-behavior-y: none;
                 /* Disable default link long-press menu on iOS */
                 -webkit-touch-callout: none;
                 /* Prevent text selection everywhere (feels native) */

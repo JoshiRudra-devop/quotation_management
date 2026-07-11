@@ -1117,27 +1117,27 @@ $conn->close();
       <h2 style="font-size: 1.5rem; margin-bottom: 15px;">Invoice Items (Card Style)</h2>
       <div id="productCardGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 20px;">
         <?php foreach ($products as $index => $prod): ?>
-        <div class="product-card" data-index="<?php echo $index; ?>" style="background: var(--surface2); border: 1px solid var(--teal-border); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="product-card" data-index="<?php echo $index; ?>" onclick="selectCard(this, event)" style="cursor: pointer; background: var(--surface2); border: 1px solid var(--teal-border); border-radius: 16px; padding: 15px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s;">
             <div>
                 <?php if (!empty($prod['image'])): ?>
-                <img src="<?php echo htmlspecialchars($prod['image']); ?>" alt="Product" style="width: 100%; height: 120px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.1);">
+                <img src="<?php echo htmlspecialchars($prod['image']); ?>" alt="Product" style="width: 100%; height: 160px; object-fit: contain; border-radius: 10px; margin-bottom: 12px; background: transparent;">
                 <?php else: ?>
-                <div style="width: 100%; height: 120px; background: rgba(45, 212, 191, 0.1); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: var(--teal);"><?php echo icon('image', 32); ?></div>
+                <div style="width: 100%; height: 160px; background: var(--teal-dim); border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: var(--teal);"><?php echo icon('image', 40); ?></div>
                 <?php endif; ?>
-                <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text);"><?php echo htmlspecialchars($prod['name']); ?></h3>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px; height: 36px; overflow: hidden;"><?php echo htmlspecialchars($prod['description'] ?: 'No description'); ?></p>
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text);"><?php echo htmlspecialchars($prod['name']); ?></h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;"><?php echo htmlspecialchars($prod['description'] ?: 'No description available for this item.'); ?></p>
             </div>
             
             <div style="margin-top: auto;">
-                <div style="margin-bottom: 10px; text-align: left;">
-                    <label style="font-size: 12px; color: var(--text-muted);">Rate (₹)</label>
-                    <input type="number" class="card-rate" value="<?php echo htmlspecialchars($prod['price']); ?>" oninput="syncCardsToTable()" style="width: 100%; padding: 8px; background: var(--background); border: 1px solid var(--border); color: var(--text); border-radius: 6px;">
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 12px; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 4px;">Rate (₹)</label>
+                    <input type="number" class="card-rate" value="<?php echo htmlspecialchars($prod['price']); ?>" oninput="syncCardsToTable()" style="width: 100%; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 8px; font-size: 14px; transition: border-color 0.2s;">
                 </div>
                 
-                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                    <button type="button" onclick="updateCardQty(this, -1)" style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 1px solid var(--teal-border); color: var(--teal); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">-</button>
-                    <input type="number" class="card-qty" value="0" min="0" oninput="syncCardsToTable()" style="width: 60px; text-align: center; padding: 6px; background: var(--background); border: 1px solid var(--border); color: var(--text); border-radius: 6px; font-weight: bold;">
-                    <button type="button" onclick="updateCardQty(this, 1)" style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 1px solid var(--teal-border); color: var(--teal); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">+</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 4px;">
+                    <button type="button" onclick="updateCardQty(this, -1)" style="width: 38px; height: 38px; border-radius: 6px; background: var(--teal-dim); border: none; color: var(--teal); cursor: pointer; font-size: 20px; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">-</button>
+                    <input type="number" class="card-qty" value="0" min="0" oninput="syncCardsToTable()" style="width: 60px; text-align: center; padding: 8px; background: transparent; border: none; color: var(--text); font-weight: 700; font-size: 16px; outline: none;">
+                    <button type="button" onclick="updateCardQty(this, 1)" style="width: 38px; height: 38px; border-radius: 6px; background: var(--teal); border: none; color: #ffffff; cursor: pointer; font-size: 20px; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: background 0.2s;">+</button>
                 </div>
             </div>
         </div>
@@ -1195,6 +1195,24 @@ $conn->close();
             }
             
             syncCardsToTable();
+        }
+
+        function selectCard(card, event) {
+            // Ignore clicks if they happened on inputs, buttons, or their children
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'BUTTON' || event.target.closest('button')) {
+                return;
+            }
+            
+            const qtyInput = card.querySelector('.card-qty');
+            let val = parseInt(qtyInput.value) || 0;
+            
+            // If the quantity is 0, setting it to 1 is exactly what the user expects when tapping the card
+            if (val === 0) {
+                qtyInput.value = 1;
+                card.style.borderColor = 'var(--teal)';
+                card.style.boxShadow = 'var(--shadow-teal)';
+                syncCardsToTable();
+            }
         }
 
         function syncCardsToTable() {
@@ -1532,6 +1550,32 @@ $conn->close();
       }
     }
 
+    // --- Unsaved Changes Warning ---
+    let isFormDirty = false;
+    
+    // Mark form as dirty when typing or interacting
+    document.addEventListener('input', function(e) {
+        if (e.target.tagName !== 'INPUT' || e.target.type !== 'search') {
+            isFormDirty = true;
+        }
+    });
+    
+    // Mark dirty on card clicks or button clicks (like adding items)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('button') || e.target.closest('.product-card') || e.target.tagName === 'SELECT') {
+            isFormDirty = true;
+        }
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+        if (isFormDirty) {
+            // Standard browser warning for unsaved changes
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+    // --------------------------------
     // Run bank details initializer when DOM ready
     document.addEventListener('DOMContentLoaded', function() {
       initBankDetails();
@@ -1732,6 +1776,8 @@ $conn->close();
     }
 
     async function saveQuotation() {
+      // Clear dirty flag so we don't warn them when saving succeeds
+      isFormDirty = false;
       const select = document.getElementById('companySelect');
       const option = select.options[select.selectedIndex];
       const companyId = select.value;
