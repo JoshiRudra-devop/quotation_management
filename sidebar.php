@@ -114,6 +114,8 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
   z-index: 999999;
   pointer-events: auto;
   touch-action: none;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 html.light-mode .loader-overlay {
@@ -195,13 +197,40 @@ html.light-mode .loader-overlay {
 </div>
 
 <script>
-// Fade out the splash loader instantly when DOM is ready
+// Smart Network Delay Loader
 document.addEventListener('DOMContentLoaded', () => {
-    const loader = document.getElementById('globalSplashLoader');
-    if (loader) {
-        loader.style.opacity = '0';
-        loader.style.visibility = 'hidden';
-    }
+    const splashOverlay = document.getElementById('globalSplashLoader');
+    let loaderTimer;
+
+    const showLoaderDelayed = () => {
+        clearTimeout(loaderTimer);
+        // Only show loader if network takes longer than 300ms
+        loaderTimer = setTimeout(() => {
+            if (splashOverlay) {
+                splashOverlay.style.opacity = '1';
+                splashOverlay.style.visibility = 'visible';
+            }
+        }, 300); 
+    };
+
+    // Listen for internal links (excluding bottom nav SPA tabs)
+    const links = document.querySelectorAll('a:not([href^="#"]):not([href^="javascript"]):not([target="_blank"]):not(.bnav-item)');
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (!e.defaultPrevented) {
+                showLoaderDelayed();
+            }
+        });
+    });
+
+    // Listen for heavy form submissions
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            if (!e.defaultPrevented) {
+                showLoaderDelayed();
+            }
+        });
+    });
 });
 
 </script>
