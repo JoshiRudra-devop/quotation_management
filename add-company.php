@@ -93,6 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $formToken = new_form_token('add_company');
 ?>
 
+<?php
+$_meta_title = 'Quote Management';
+$_meta_crumb = 'Add Company';
+$_show_back_btn = true;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -200,9 +205,6 @@ $formToken = new_form_token('add_company');
 <div class="mainBody">
   <div class="main-content">
 
-<div style="max-width: 600px; margin: 0 auto; padding: 0 15px;">
-  <button type="button" class="btn-text-back" onclick="window.location.href='home.php#companies'">← Back to Companies</button>
-</div>
 <div class="setup-container form-container" style="margin-top: 15px;">
   <div class="form-header">
     <h1>Add Company</h1>

@@ -5,6 +5,7 @@ require_auth();
 // Just for sidebar breadcrumbs
 $_meta_title = 'Quote Management';
 $_meta_crumb = 'Contact Support';
+$_show_back_btn = true;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -125,10 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="mainBody">
   <div class="main-content">
-    
-    <div style="max-width: 700px; margin: 0 auto; padding: 0 15px;">
-      <button type="button" class="btn-text-back" onclick="window.history.back()">← Back</button>
-    </div>
 
     <div class="setup-container">
       <div class="form-header">

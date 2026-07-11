@@ -353,9 +353,15 @@ document.addEventListener('DOMContentLoaded', () => {
      ═══════════════════════════════════════════ -->
 <header class="app-topbar" id="appTopbar">
     <div class="topbar-left">
+        <?php if (!empty($_show_back_btn)): ?>
+        <button class="topbar-icon-btn" onclick="window.history.back()" title="Go Back" aria-label="Go Back" style="margin-right: 12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <?php else: ?>
         <a href="home.php" class="topbar-brand">
             <img class="topbar-logo" src="logo-new.png" alt="QuaTation" />
         </a>
+        <?php endif; ?>
         <div class="topbar-breadcrumb">
             <span class="topbar-page-title">Quote Management</span>
             <span class="topbar-crumb"><?php echo htmlspecialchars($_meta_crumb); ?></span>
