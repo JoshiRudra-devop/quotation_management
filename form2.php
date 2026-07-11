@@ -1011,7 +1011,7 @@ $conn->close();
       <form id="productForm" class="product-form" style="padding: 20px; margin-bottom: 20px; border-radius: 12px; background: var(--surface2); border: 1px solid var(--teal-border); box-shadow: var(--shadow-card);">
         
         <!-- Unified Top Row -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; align-items: start;">
+        <div class="mobile-responsive-grid">
           
           <!-- Company Selection Block -->
           <div class="form-group">
@@ -1079,7 +1079,7 @@ $conn->close();
         </div>
 
         <!-- Order By Person Block -->
-        <div class="form-row">
+        <div class="mobile-responsive-grid-2">
           <div class="form-group">
             <label for="orderByPerson">Order By (Person Name)</label>
             <input type="text" id="orderByPerson" name="orderByPerson" required placeholder="Enter name..." />
@@ -1225,7 +1225,7 @@ $conn->close();
       <?php endif; ?>
 
       <!-- Actions moved to form action bar -->
-      <div style="height: 80px;"></div> <!-- Spacer so content isn't covered -->
+      <div class="action-bar-spacer" style="height: 100px;"></div> <!-- Spacer so content isn't covered -->
     </div>
   </div>
 
