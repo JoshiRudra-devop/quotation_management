@@ -177,11 +177,17 @@ if ($result && $result->num_rows > 0) {
 $stmt->close();
 
 // Fetch current user format preference
-$stmt_pref = $conn->prepare("SELECT format_preference FROM users WHERE user_id = ?");
+$stmt_pref = $conn->prepare("SELECT format_preference, product_ui_preference FROM users WHERE user_id = ?");
 $stmt_pref->bind_param("i", $_SESSION['user_id']);
 $stmt_pref->execute();
 $pref_res = $stmt_pref->get_result();
-$format_pref = ($pref_res && $pref_res->num_rows > 0) ? $pref_res->fetch_assoc()['format_preference'] : null;
+$format_pref = null;
+$product_ui_pref = 'list'; // Default
+if ($pref_res && $pref_res->num_rows > 0) {
+    $row = $pref_res->fetch_assoc();
+    $format_pref = $row['format_preference'];
+    $product_ui_pref = $row['product_ui_preference'] ?: 'list';
+}
 $stmt_pref->close();
 
 // Fetch auto-generated quotation number
@@ -1107,8 +1113,44 @@ $conn->close();
         </script>
       </form>
 
+      <?php if ($product_ui_pref === 'card'): ?>
+      <h2 style="font-size: 1.5rem; margin-bottom: 15px;">Invoice Items (Card Style)</h2>
+      <div id="productCardGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 20px;">
+        <?php foreach ($products as $index => $prod): ?>
+        <div class="product-card" data-index="<?php echo $index; ?>" style="background: var(--surface2); border: 1px solid var(--teal-border); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <?php if (!empty($prod['image'])): ?>
+                <img src="<?php echo htmlspecialchars($prod['image']); ?>" alt="Product" style="width: 100%; height: 120px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.1);">
+                <?php else: ?>
+                <div style="width: 100%; height: 120px; background: rgba(45, 212, 191, 0.1); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: var(--teal);"><?php echo icon('image', 32); ?></div>
+                <?php endif; ?>
+                <h3 style="font-size: 16px; margin-bottom: 5px; color: var(--text);"><?php echo htmlspecialchars($prod['name']); ?></h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px; height: 36px; overflow: hidden;"><?php echo htmlspecialchars($prod['description'] ?: 'No description'); ?></p>
+            </div>
+            
+            <div style="margin-top: auto;">
+                <div style="margin-bottom: 10px; text-align: left;">
+                    <label style="font-size: 12px; color: var(--text-muted);">Rate (₹)</label>
+                    <input type="number" class="card-rate" value="<?php echo htmlspecialchars($prod['price']); ?>" oninput="syncCardsToTable()" style="width: 100%; padding: 8px; background: var(--background); border: 1px solid var(--border); color: var(--text); border-radius: 6px;">
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <button type="button" onclick="updateCardQty(this, -1)" style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 1px solid var(--teal-border); color: var(--teal); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">-</button>
+                    <input type="number" class="card-qty" value="0" min="0" oninput="syncCardsToTable()" style="width: 60px; text-align: center; padding: 6px; background: var(--background); border: 1px solid var(--border); color: var(--text); border-radius: 6px; font-weight: bold;">
+                    <button type="button" onclick="updateCardQty(this, 1)" style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 1px solid var(--teal-border); color: var(--teal); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;">+</button>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      
+      <!-- Hidden table for compatibility with generate PDF logic -->
+      <div style="display: none;">
+      <?php else: ?>
       <h2 style="font-size: 1.5rem; margin-bottom: 15px;">Invoice Items</h2>
       <div class="table-responsive-container" style="overflow-x: auto; border: 1px solid var(--teal-border); border-radius: 12px; background: var(--surface2); padding: 15px; margin-bottom: 20px;">
+      <?php endif; ?>
+
         <table id="invoiceTable">
           <thead>
             <tr>
@@ -1126,10 +1168,61 @@ $conn->close();
           </tbody>
         </table>
         
+        <?php if ($product_ui_pref !== 'card'): ?>
         <button type="button" class="dock-button" onclick="addInvoiceRow()" style="margin-top: 15px; max-width: 150px; background: transparent; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: none;">
           ➕ Add Row
         </button>
+        <?php endif; ?>
       </div>
+      
+      <?php if ($product_ui_pref === 'card'): ?>
+      <script>
+        function updateCardQty(btn, change) {
+            const container = btn.parentElement;
+            const input = container.querySelector('.card-qty');
+            let val = parseInt(input.value) || 0;
+            val += change;
+            if (val < 0) val = 0;
+            input.value = val;
+            
+            const card = container.closest('.product-card');
+            if (val > 0) {
+                card.style.borderColor = 'var(--teal)';
+                card.style.boxShadow = 'var(--shadow-teal)';
+            } else {
+                card.style.borderColor = 'var(--teal-border)';
+                card.style.boxShadow = 'none';
+            }
+            
+            syncCardsToTable();
+        }
+
+        function syncCardsToTable() {
+            // This function syncs the card inputs to the hidden table so PDF generation works seamlessly.
+            const tbody = document.querySelector('#invoiceTable tbody');
+            tbody.innerHTML = ''; // Clear all existing rows
+            
+            let itemCounter = 0;
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                const qtyInput = card.querySelector('.card-qty');
+                const rateInput = card.querySelector('.card-rate');
+                const qty = parseInt(qtyInput.value) || 0;
+                const rate = parseFloat(rateInput.value) || 0;
+                
+                if (qty > 0) {
+                    const idx = card.getAttribute('data-index');
+                    addInvoiceRowWithData(idx, qty, rate);
+                    itemCounter++;
+                }
+            });
+            
+            // Re-run totals calculation which runs when addInvoiceRowWithData fires, 
+            // but just to be sure we also run computeTotals manually
+            computeTotals();
+        }
+      </script>
+      <?php endif; ?>
 
       <!-- Actions moved to form action bar -->
       <div style="height: 80px;"></div> <!-- Spacer so content isn't covered -->

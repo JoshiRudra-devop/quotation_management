@@ -28,9 +28,72 @@ $page_meta = [
     'premium.php'     => ['title' => 'Upgrade',          'crumb' => 'Home / Upgrade'],
 ];
 $_meta_title  = $page_meta[$current_page]['title']  ?? ucfirst(str_replace(['.php','-'], ['',' '], $current_page));
-$_meta_crumb  = $page_meta[$current_page]['crumb']  ?? 'Home';
-if (function_exists('flash_render')) flash_render();
+$_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
 ?>
+<!-- Native App Injection (Transforms Web View to App View) -->
+<script>
+    (function() {
+        // Prevent viewport zooming
+        let metaViewport = document.querySelector('meta[name="viewport"]');
+        if (!metaViewport) {
+            metaViewport = document.createElement('meta');
+            metaViewport.name = "viewport";
+            document.head.appendChild(metaViewport);
+        }
+        // viewport-fit=cover fills notches, user-scalable=no prevents zoom
+        metaViewport.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover";
+
+        // iOS & Android web app capable tags
+        const metaTags = [
+            { name: "apple-mobile-web-app-capable", content: "yes" },
+            { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+            { name: "theme-color", content: "#070a0a" },
+            { name: "mobile-web-app-capable", content: "yes" }
+        ];
+
+        metaTags.forEach(tag => {
+            const meta = document.createElement('meta');
+            meta.name = tag.name;
+            meta.content = tag.content;
+            document.head.appendChild(meta);
+        });
+
+        // Inject Native App CSS tweaks
+        const nativeStyles = document.createElement('style');
+        nativeStyles.textContent = `
+            html, body {
+                /* Prevent pull-to-refresh bouncy effect */
+                overscroll-behavior-y: none;
+                /* Disable default link long-press menu on iOS */
+                -webkit-touch-callout: none;
+                /* Prevent text selection everywhere (feels native) */
+                -webkit-user-select: none;
+                user-select: none;
+                /* Remove default browser tap highlight colors */
+                -webkit-tap-highlight-color: transparent;
+                /* Accommodate notch/dynamic island on modern phones */
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+            
+            /* Give back text selection and interaction for inputs */
+            input, textarea, select, [contenteditable="true"] {
+                -webkit-user-select: auto !important;
+                user-select: auto !important;
+            }
+
+            /* Smooth momentum scrolling everywhere */
+            * {
+                -webkit-overflow-scrolling: touch;
+            }
+        `;
+        document.head.appendChild(nativeStyles);
+    })();
+</script>
+
+<!-- Global Top App Bar (Native Style) --><?php if (function_exists('flash_render')) flash_render(); ?>
 
 <!-- ═══════════════════════════════════════════
      TOP TITLE BAR  (breadcrumb + user actions)

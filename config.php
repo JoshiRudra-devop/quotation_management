@@ -63,10 +63,10 @@ function db_connect() {
     $con->query("ALTER TABLE instruments ADD COLUMN IF NOT EXISTS image_url VARCHAR(500) DEFAULT NULL");
     $con->query("ALTER TABLE quotation_items ADD COLUMN IF NOT EXISTS hsn_code VARCHAR(20) DEFAULT NULL");
     $con->query("ALTER TABLE quotation_items ADD COLUMN IF NOT EXISTS image_url VARCHAR(500) DEFAULT NULL");
-    // Ensure format_preference column exists in users table and is varchar
+    // Ensure format_preference and product_ui_preference columns exist in users table
     $con->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS format_preference VARCHAR(50) DEFAULT NULL");
     $con->query("ALTER TABLE users MODIFY COLUMN format_preference VARCHAR(50) DEFAULT NULL");
-    
+    $con->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS product_ui_preference VARCHAR(50) DEFAULT NULL");
     // Ensure company settings columns exist in companies table
     $con->query("ALTER TABLE companies ADD COLUMN IF NOT EXISTS payment_qr_image VARCHAR(500) DEFAULT NULL");
     $con->query("ALTER TABLE companies ADD COLUMN IF NOT EXISTS bank_name VARCHAR(255) DEFAULT NULL");

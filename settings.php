@@ -32,6 +32,27 @@ if (isset($_GET['action']) && $_GET['action'] === 'set_format') {
     exit();
 }
 
+// Handle AJAX for setting product UI preference
+if (isset($_GET['action']) && $_GET['action'] === 'set_ui_pref') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (isset($data['ui_pref']) && in_array($data['ui_pref'], ['list', 'card'])) {
+        $ui_pref = $data['ui_pref'];
+        $stmt = $con->prepare("UPDATE users SET product_ui_preference = ? WHERE user_id = ?");
+        $stmt->bind_param("si", $ui_pref, $user_id);
+        $stmt->execute();
+        $stmt->close();
+        $con->close();
+        
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true]);
+        exit();
+    }
+    header('Content-Type: application/json');
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid preference']);
+    exit();
+}
+
 $cloud_name = "div48nrko";
 $upload_preset = "quatation_managment";
 
@@ -42,11 +63,17 @@ if (isset($_GET['upgrade']) && $_GET['upgrade'] == 1) {
 $errorMessage = '';
 
 // Fetch current user format preference
-$stmt_pref = $con->prepare("SELECT format_preference FROM users WHERE user_id = ?");
+$stmt_pref = $con->prepare("SELECT format_preference, product_ui_preference FROM users WHERE user_id = ?");
 $stmt_pref->bind_param("i", $user_id);
 $stmt_pref->execute();
 $pref_res = $stmt_pref->get_result();
-$format_pref = ($pref_res && $pref_res->num_rows > 0) ? $pref_res->fetch_assoc()['format_preference'] : null;
+$format_pref = null;
+$product_ui_pref = null;
+if ($pref_res && $pref_res->num_rows > 0) {
+    $row = $pref_res->fetch_assoc();
+    $format_pref = $row['format_preference'];
+    $product_ui_pref = $row['product_ui_preference'];
+}
 $stmt_pref->close();
 
 // Fetch current user details
@@ -846,6 +873,45 @@ $con->close();
                     </div>
                 </div>
             </div>
+
+            <!-- Section: Product Selection Style Preference -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <h2>📦 Product Selection Style</h2>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="width: 100%;">
+                        <label>Select your preferred UI style for adding products to quotations.</label>
+                        <select id="settingUIPreference" class="form-control" style="width: 100%; max-width: 400px; padding: 10px; border-radius: 8px; border: 1px solid var(--teal-border); background: var(--surface); color: var(--text); margin-top: 10px;" onchange="updateUIPreference(this.value)">
+                            <option value="">-- Select Selection Style --</option>
+                            <option value="list" <?php echo ($product_ui_pref === 'list') ? 'selected' : ''; ?>>List Style (Standard Table)</option>
+                            <option value="card" <?php echo ($product_ui_pref === 'card') ? 'selected' : ''; ?>>Card Style (Visual Grid)</option>
+                        </select>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">List Style gives you a clean table layout. Card Style provides an interactive grid of all your instruments with image previews.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                async function updateUIPreference(uiPref) {
+                    if (!uiPref) return;
+                    try {
+                        const res = await fetch('settings.php?action=set_ui_pref', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ ui_pref: uiPref })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            QT.toastSuccess('Product Selection Style updated successfully!');
+                        } else {
+                            QT.toastError('Failed to update preference.');
+                        }
+                    } catch (e) {
+                        QT.toastError('An error occurred.');
+                    }
+                }
+            </script>
 
             <!-- Section: Quotation Content Defaults -->
             <div class="settings-card">

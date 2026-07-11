@@ -538,13 +538,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 // Fetch user's format preference
 $con = db_connect();
-$stmt = $con->prepare("SELECT format_preference FROM users WHERE user_id = ?");
+$stmt = $con->prepare("SELECT format_preference, product_ui_preference FROM users WHERE user_id = ?");
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $res = $stmt->get_result();
 $format_pref = null;
+$product_ui_pref = null;
 if ($res && $res->num_rows > 0) {
-    $format_pref = $res->fetch_assoc()['format_preference'];
+    $row = $res->fetch_assoc();
+    $format_pref = $row['format_preference'];
+    $product_ui_pref = $row['product_ui_preference'];
 }
 $stmt->close();
 $con->close();
@@ -1047,6 +1050,8 @@ $con->close();
     <?php include __DIR__ . '/sidebar.php'; ?>
 
     <div class="main-content">
+      <?php if (empty($format_pref) || empty($product_ui_pref)): ?>
+      
       <?php if (empty($format_pref)): ?>
       <!-- Format Selection Modal -->
       <div id="formatSelectionModal" class="modal" style="display: flex; z-index: 9999;">
@@ -1059,34 +1064,44 @@ $con->close();
             <div class="format-card" onclick="selectFormat('old')" style="border: 2px solid var(--teal-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; background: var(--surface);">
               <h3 style="color: var(--text); margin-top: 0;">Old Format (Standard)</h3>
               <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">A simple, traditional layout perfect for standard products.</p>
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; font-size: 10px; color: var(--text-muted); border: 1px dashed var(--teal-border);">
-                [Header Image]<br><br>
-                <strong>To: Client Name</strong><br>
-                Date: 12/12/2025<br><br>
-                Table:<br>
-                - Item 1 | $100<br>
-                - Item 2 | $200<br><br>
-                [Footer Image]
-              </div>
+              <img src="format1_preview.png" alt="Format 1 Preview" style="width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(45, 212, 191, 0.2);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'150\'><rect width=\'100%\' height=\'150\' fill=\'%23111\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Preview Image (Upload format1_preview.png)</text></svg>'">
             </div>
             
             <!-- Format 2 -->
             <div class="format-card" onclick="selectFormat('new')" style="border: 2px solid var(--teal-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; background: var(--surface);">
               <h3 style="color: var(--text); margin-top: 0;">New Format (Visual)</h3>
               <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Includes product images, terms, and a highlights page.</p>
-              <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; font-size: 10px; color: var(--text-muted); border: 1px dashed var(--teal-border);">
-                [Header Image]<br><br>
-                <strong>To: Client Name</strong><br>
-                Date: 12/12/2025<br><br>
-                Visual Table:<br>
-                - [Img] Item 1 | $100<br>
-                - [Img] Item 2 | $200<br><br>
-                [Footer Image]
-              </div>
+              <img src="format2_preview.png" alt="Format 2 Preview" style="width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(45, 212, 191, 0.2);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'150\'><rect width=\'100%\' height=\'150\' fill=\'%23111\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Preview Image (Upload format2_preview.png)</text></svg>'">
             </div>
           </div>
         </div>
       </div>
+      <?php endif; ?>
+
+      <?php if (empty($product_ui_pref)): ?>
+      <!-- Product UI Selection Modal -->
+      <div id="uiSelectionModal" class="modal" style="display: <?php echo empty($format_pref) ? 'none' : 'flex'; ?>; z-index: 9999;">
+        <div class="modal-content" style="max-width: 800px; width: 95%; background: var(--surface2); border: 1px solid var(--teal-border); text-align: center; border-radius: 16px;">
+          <h2 style="color: var(--teal); font-size: 24px; margin-bottom: 10px;"><?php echo icon('box', 22); ?> Choose Your Product Selection Style</h2>
+          <p style="color: var(--text-muted); margin-bottom: 30px;">How do you prefer to add items to your quotations?</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+            <div class="format-card" onclick="selectUI('list')" style="border: 2px solid var(--teal-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; background: var(--surface);">
+              <h3 style="color: var(--text); margin-top: 0;">List Style (Table)</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">A clean table view. Click an empty row to search and select products.</p>
+              <img src="ui_list_preview.png" alt="List Style Preview" style="width: 100%; border-radius: 8px; border: 1px solid rgba(45, 212, 191, 0.2);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'150\'><rect width=\'100%\' height=\'150\' fill=\'%23111\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Preview Image (Upload ui_list_preview.png)</text></svg>'">
+            </div>
+            
+            <div class="format-card" onclick="selectUI('card')" style="border: 2px solid var(--teal-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; background: var(--surface);">
+              <h3 style="color: var(--text); margin-top: 0;">Card Style (Visual)</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Shows all instruments as interactive cards. Type quantities to add them.</p>
+              <img src="ui_card_preview.png" alt="Card Style Preview" style="width: 100%; border-radius: 8px; border: 1px solid rgba(45, 212, 191, 0.2);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'150\'><rect width=\'100%\' height=\'150\' fill=\'%23111\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Preview Image (Upload ui_card_preview.png)</text></svg>'">
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php endif; ?>
+
       <style>
         .format-card:hover {
           border-color: var(--teal) !important;
@@ -1104,12 +1119,37 @@ $con->close();
             });
             const data = await res.json();
             if (res.ok && data.success) {
-              document.getElementById('formatSelectionModal').style.display = 'none';
-              QT.toastSuccess('Format selected successfully!');
+              const formatModal = document.getElementById('formatSelectionModal');
+              if (formatModal) formatModal.style.display = 'none';
+              
+              const uiModal = document.getElementById('uiSelectionModal');
+              if (uiModal) {
+                  uiModal.style.display = 'flex';
+              } else {
+                  QT.toastSuccess('Format selected successfully!');
+              }
             }
           } catch (e) {
             console.error(e);
             QT.toastError('Failed to save format preference.');
+          }
+        }
+
+        async function selectUI(uiPref) {
+          try {
+            const res = await fetch('settings.php?action=set_ui_pref', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ui_pref: uiPref })
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+              document.getElementById('uiSelectionModal').style.display = 'none';
+              QT.toastSuccess('Interface preference saved!');
+            }
+          } catch (e) {
+            console.error(e);
+            QT.toastError('Failed to save interface preference.');
           }
         }
       </script>
