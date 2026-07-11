@@ -101,7 +101,7 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
 <header class="app-topbar" id="appTopbar">
     <div class="topbar-left">
         <a href="home.php" class="topbar-brand">
-            <img class="topbar-logo" src="Logo.png" alt="QuaTation" />
+            <img class="topbar-logo" src="Logo.png?v=2" alt="QuaTation" />
         </a>
         <div class="topbar-breadcrumb">
             <span class="topbar-page-title"><?php echo htmlspecialchars($_meta_title); ?></span>
