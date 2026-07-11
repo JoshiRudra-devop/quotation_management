@@ -160,15 +160,15 @@ $formToken = new_form_token('add_product');
 }
 
 /* Header */
-.header { text-align:center; margin-bottom:25px; }
-.header h1 {
+.form-header { text-align:center; margin-bottom:25px; }
+.form-header h1 {
   font-family: var(--font-head);
   color: var(--teal);
   font-size:22px;
   font-weight:700;
   margin-bottom:8px;
 }
-.header p { color: var(--text-muted, #aaa); font-size:14px; }
+.form-header p { color: var(--text-muted, #aaa); font-size:14px; }
 
 /* Form */
 .form-group { margin-bottom:15px; }
@@ -214,9 +214,22 @@ $formToken = new_form_token('add_product');
 }
 .btn-secondary:hover { background: var(--teal); color:#000; }
 
-.back-btn {
-  max-width:150px;
+.btn-secondary:hover { background: var(--teal); color:#000; }
+
+.btn-text-back {
+  background: transparent;
+  border: none;
+  color: var(--teal);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: -5px;
+  transition: opacity 0.2s;
 }
+.btn-text-back:hover { opacity: 0.8; text-decoration: underline; }
 
 /* Steps */
 .step { display:none; }
@@ -250,7 +263,7 @@ $formToken = new_form_token('add_product');
     border-radius: 10px;
     width: 95%;
   }
-  .header h1 {
+  .form-header h1 {
     font-size: 18px;
   }
   .navigation {
@@ -268,14 +281,14 @@ $formToken = new_form_token('add_product');
 <div class="mainBody">
   <div class="main-content">
 
-<div class="setup-container form-container">
-  <div class="header">
+<div style="max-width: 600px; margin: 0 auto; padding: 0 15px;">
+  <button type="button" class="btn-text-back" onclick="window.location.href='home.php'">← Back to Dashboard</button>
+</div>
+<div class="setup-container form-container" style="margin-top: 15px;">
+  <div class="form-header">
     <h1>Add New Product</h1>
     <p>Fill out the details below to add your product</p>
   </div>
-   <div>
-     <button type="button" class="btn-primary btn back-btn" onclick="window.location.href='home.php'" style="margin-bottom:30px">← BACK</button>
-    </div>
 
   <form id="productForm" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token()); ?>">

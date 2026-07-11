@@ -129,9 +129,9 @@ $formToken = new_form_token('add_company');
   color: var(--text, #ccc);
   box-shadow: var(--shadow-card, 0 4px 20px rgba(45,212,191,0.12));
 }
-.header { text-align:center; margin-bottom:40px; }
-.header h1 { font-family: var(--font-head); color: var(--teal); font-size:28px; font-weight:700; margin-bottom:10px; }
-.header p { color: var(--text-muted, #aaa); }
+.form-header { text-align:center; margin-bottom:40px; }
+.form-header h1 { font-family: var(--font-head); color: var(--teal); font-size:28px; font-weight:700; margin-bottom:10px; }
+.form-header p { color: var(--text-muted, #aaa); }
 .form-group { margin-bottom:20px; }
 .form-group label { display:block; margin-bottom:8px; color: var(--teal); font-weight:600; }
 .form-group input, .form-group textarea {
@@ -152,6 +152,21 @@ $formToken = new_form_token('add_company');
 .btn-secondary:hover { background: var(--teal); color:#000; }
 .actions { display:flex; gap:12px; justify-content:flex-end; margin-top:10px; }
 .error { color:#ff6b6b; background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.4); padding:10px 12px; border-radius:8px; margin-bottom:15px; }
+
+.btn-text-back {
+  background: transparent;
+  border: none;
+  color: var(--teal);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: -5px;
+  transition: opacity 0.2s;
+}
+.btn-text-back:hover { opacity: 0.8; text-decoration: underline; }
 
 @media (max-width: 600px) {
   .navbar { flex-direction: column; gap: 12px; text-align: center; padding: 1.5rem 1rem; }
@@ -185,8 +200,11 @@ $formToken = new_form_token('add_company');
 <div class="mainBody">
   <div class="main-content">
 
-<div class="setup-container form-container">
-  <div class="header">
+<div style="max-width: 600px; margin: 0 auto; padding: 0 15px;">
+  <button type="button" class="btn-text-back" onclick="window.location.href='home.php'">← Back to Dashboard</button>
+</div>
+<div class="setup-container form-container" style="margin-top: 15px;">
+  <div class="form-header">
     <h1>Add Company</h1>
     <p>Provide your client/company details</p>
   </div>
