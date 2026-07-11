@@ -98,11 +98,11 @@ body {
 }
 
 body:has(.app-topbar) {
-    padding-top: var(--topbar-h);
+    padding-top: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
 }
 
 body:has(.bottom-nav) {
-    padding-bottom: var(--bnav-h);
+    padding-bottom: calc(var(--bnav-h) + env(safe-area-inset-bottom, 0px));
 }
 
 /* Lock scroll when tray is open */
@@ -114,7 +114,8 @@ body.tray-open { overflow: hidden; }
 .app-topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
-    height: var(--topbar-h);
+    height: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
     background: var(--surface);
     border-bottom: 1px solid var(--teal-border);
     z-index: 1200;
@@ -226,7 +227,7 @@ body.tray-open { overflow: hidden; }
 .bottom-nav {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    height: var(--bnav-h);
+    height: calc(var(--bnav-h) + env(safe-area-inset-bottom, 0px));
     background: var(--surface);
     border-top: 1px solid var(--teal-border);
     z-index: 1200;

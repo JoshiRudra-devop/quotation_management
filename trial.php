@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_trial'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="Logo.png">
+<link rel="icon" type="image/png" href="logo-new.png">
 <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_trial'])) {
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="Logo.png" alt="Logo" class="logo-image">
+            <img src="logo-new.png" alt="Logo" class="logo-image">
             <h1 class="company-name">Quotation Management System</h1>
         </div>
         <div class="nav-links">

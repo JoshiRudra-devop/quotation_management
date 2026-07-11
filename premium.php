@@ -39,7 +39,7 @@ $success_message = isset($_GET['success']) ? "Subscription upgraded successfully
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="Logo.png">
+<link rel="icon" type="image/png" href="logo-new.png">
 <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
