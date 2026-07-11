@@ -207,13 +207,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Custom Pull-To-Refresh Loader -->
-<div id="ptr-loader" style="position: fixed; top: calc(env(safe-area-inset-top) - 50px); left: 0; right: 0; height: 50px; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: transform 0.2s; pointer-events: none;">
-    <div class="ptr-spinner" style="width: 28px; height: 28px; border: 3px solid var(--surface); border-top-color: var(--teal); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: var(--surface2);"></div>
-</div>
 <style>
-@keyframes ptrSpin { 100% { transform: rotate(360deg); } }
-.ptr-loading .ptr-spinner { animation: ptrSpin 0.8s linear infinite; }
+/* Custom Pull-to-Refresh states for the Global Splash Loader */
+.loader-overlay.ptr-dragging {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none;
+}
+.loader-overlay.ptr-dragging .loading-logo {
+    animation: none !important;
+    opacity: 0;
+}
+/* Show only the Home icon while dragging down */
+.loader-overlay.ptr-dragging .loading-logo:nth-child(1) {
+    opacity: 1;
+}
 </style>
 <script>
 (function() {
@@ -226,14 +237,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('input', () => isFormDirtyLocally = true);
     
     document.addEventListener('DOMContentLoaded', () => {
-        const ptrLoader = document.getElementById('ptr-loader');
-        const threshold = 70; // drag distance to trigger refresh
+        const splashOverlay = document.getElementById('globalSplashLoader');
+        const logoContainer = splashOverlay.querySelector('.logo-loader-container');
+        const threshold = 120; // drag distance required to trigger refresh
 
         document.addEventListener('touchstart', (e) => {
             if (window.scrollY === 0) {
                 startY = e.touches[0].clientY;
                 isPulling = true;
-                ptrLoader.style.transition = 'none';
+                splashOverlay.classList.add('ptr-dragging');
+                logoContainer.style.transition = 'none';
+                logoContainer.style.transform = `translateY(calc(-50vh - 60px))`; // Hide above screen
             }
         }, { passive: true });
 
@@ -243,14 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const dragDistance = currentY - startY;
 
             if (dragDistance > 0 && window.scrollY === 0) {
-                // Prevent native scroll
-                if (e.cancelable) e.preventDefault();
+                if (e.cancelable) e.preventDefault(); // Prevent native scroll bounce
                 
-                const pullHeight = Math.min(dragDistance * 0.4, threshold + 30);
-                ptrLoader.style.transform = `translateY(${pullHeight}px)`;
-                
-                const spinner = ptrLoader.querySelector('.ptr-spinner');
-                spinner.style.transform = `rotate(${dragDistance * 2}deg)`;
+                // Pull down logo from top of screen
+                const pullHeight = dragDistance * 0.7;
+                logoContainer.style.transform = `translateY(calc(-50vh - 60px + ${pullHeight}px))`;
             }
         }, { passive: false });
 
@@ -259,28 +270,38 @@ document.addEventListener('DOMContentLoaded', () => {
             isPulling = false;
             
             const dragDistance = currentY - startY;
-            if (dragDistance * 0.4 > threshold && window.scrollY === 0) {
+            if (dragDistance * 0.7 > (threshold * 0.7) && window.scrollY === 0) {
                 
                 // If form is dirty and we are on form2, intercept!
                 if (window.isFormDirty || isFormDirtyLocally) {
                     if (!confirm("You have unsaved changes. Are you sure you want to refresh and lose them?")) {
                         // Cancel refresh
-                        ptrLoader.style.transition = 'transform 0.3s';
-                        ptrLoader.style.transform = 'translateY(0)';
+                        splashOverlay.classList.remove('ptr-dragging');
+                        splashOverlay.style.opacity = '0';
+                        splashOverlay.style.visibility = 'hidden';
                         return;
                     }
                 }
 
-                ptrLoader.style.transition = 'transform 0.3s';
-                ptrLoader.style.transform = `translateY(${threshold}px)`;
-                ptrLoader.classList.add('ptr-loading');
+                // Trigger Refresh!
+                // Remove ptr-dragging class to instantly show frosted glass and start animation
+                splashOverlay.classList.remove('ptr-dragging');
+                splashOverlay.style.opacity = '1';
+                splashOverlay.style.visibility = 'visible';
+                
+                // Smoothly snap the logo container to the center of the screen
+                logoContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                logoContainer.style.transform = 'translateY(0)';
                 
                 setTimeout(() => {
                     window.location.reload();
-                }, 500);
+                }, 800); // Give user time to see the glassy animation before reload
             } else {
-                ptrLoader.style.transition = 'transform 0.3s';
-                ptrLoader.style.transform = 'translateY(0)';
+                // Not pulled far enough, cancel
+                splashOverlay.classList.remove('ptr-dragging');
+                splashOverlay.style.opacity = '0';
+                splashOverlay.style.visibility = 'hidden';
+                logoContainer.style.transform = 'translateY(0)';
             }
         });
     });
