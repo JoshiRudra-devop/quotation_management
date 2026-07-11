@@ -210,11 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 splashOverlay.style.opacity = '1';
                 splashOverlay.style.visibility = 'visible';
             }
-        }, 300); 
+        }, 150); // Reduced to 150ms: fast enough to feel instant, slow enough to prevent flicker on fast loads
     };
 
-    // Listen for internal links (excluding bottom nav SPA tabs)
-    const links = document.querySelectorAll('a:not([href^="#"]):not([href^="javascript"]):not([target="_blank"]):not(.bnav-item)');
+    // Listen for internal links (excluding SPA tabs that use switchTab)
+    const links = document.querySelectorAll('a:not([href^="#"]):not([href^="javascript"]):not([target="_blank"]):not([onclick*="switchTab"])');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             if (!e.defaultPrevented) {
