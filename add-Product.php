@@ -338,6 +338,7 @@ $formToken = new_form_token('add_product');
     </div>
    
   </form>
+  <div class="action-bar-spacer" style="height: 100px;"></div>
 </div>
 
 <script>

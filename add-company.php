@@ -238,6 +238,7 @@ $formToken = new_form_token('add_company');
       <button type="submit" class="btn btn-primary" id="companySubmitBtn">Save Company</button>
     </div>
   </form>
+  <div class="action-bar-spacer" style="height: 100px;"></div>
 </div>
 </div>
 </div>

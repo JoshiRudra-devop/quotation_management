@@ -62,6 +62,8 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
         const nativeStyles = document.createElement('style');
         nativeStyles.textContent = `
             html, body {
+                /* Prevent native pull-to-refresh bouncy effect to use our custom loader */
+                overscroll-behavior-y: none;
                 /* Disable default link long-press menu on iOS */
                 -webkit-touch-callout: none;
                 /* Prevent text selection everywhere (feels native) */
@@ -89,6 +91,86 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
         `;
         document.head.appendChild(nativeStyles);
     })();
+</script>
+
+<!-- Custom Pull-To-Refresh Loader -->
+<div id="ptr-loader" style="position: fixed; top: calc(env(safe-area-inset-top) - 50px); left: 0; right: 0; height: 50px; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: transform 0.2s; pointer-events: none;">
+    <div class="ptr-spinner" style="width: 28px; height: 28px; border: 3px solid var(--surface); border-top-color: var(--teal); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: var(--surface2);"></div>
+</div>
+<style>
+@keyframes ptrSpin { 100% { transform: rotate(360deg); } }
+.ptr-loading .ptr-spinner { animation: ptrSpin 0.8s linear infinite; }
+</style>
+<script>
+(function() {
+    let startY = 0;
+    let currentY = 0;
+    let isPulling = false;
+    let isFormDirtyLocally = false;
+    
+    // Quick hook to see if the form is dirty (from form2 logic) before allowing refresh
+    document.addEventListener('input', () => isFormDirtyLocally = true);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const ptrLoader = document.getElementById('ptr-loader');
+        const threshold = 70; // drag distance to trigger refresh
+
+        document.addEventListener('touchstart', (e) => {
+            if (window.scrollY === 0) {
+                startY = e.touches[0].clientY;
+                isPulling = true;
+                ptrLoader.style.transition = 'none';
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isPulling) return;
+            currentY = e.touches[0].clientY;
+            const dragDistance = currentY - startY;
+
+            if (dragDistance > 0 && window.scrollY === 0) {
+                // Prevent native scroll
+                if (e.cancelable) e.preventDefault();
+                
+                const pullHeight = Math.min(dragDistance * 0.4, threshold + 30);
+                ptrLoader.style.transform = `translateY(${pullHeight}px)`;
+                
+                const spinner = ptrLoader.querySelector('.ptr-spinner');
+                spinner.style.transform = `rotate(${dragDistance * 2}deg)`;
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', () => {
+            if (!isPulling) return;
+            isPulling = false;
+            
+            const dragDistance = currentY - startY;
+            if (dragDistance * 0.4 > threshold && window.scrollY === 0) {
+                
+                // If form is dirty and we are on form2, intercept!
+                if (window.isFormDirty || isFormDirtyLocally) {
+                    if (!confirm("You have unsaved changes. Are you sure you want to refresh and lose them?")) {
+                        // Cancel refresh
+                        ptrLoader.style.transition = 'transform 0.3s';
+                        ptrLoader.style.transform = 'translateY(0)';
+                        return;
+                    }
+                }
+
+                ptrLoader.style.transition = 'transform 0.3s';
+                ptrLoader.style.transform = `translateY(${threshold}px)`;
+                ptrLoader.classList.add('ptr-loading');
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            } else {
+                ptrLoader.style.transition = 'transform 0.3s';
+                ptrLoader.style.transform = 'translateY(0)';
+            }
+        });
+    });
+})();
 </script>
 
 <!-- Global Top App Bar (Native Style) --><?php if (function_exists('flash_render')) flash_render(); ?>
