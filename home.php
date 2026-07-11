@@ -230,7 +230,6 @@ if (isset($_GET['action'])) {
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     $response = curl_exec($ch);
-                    curl_close($ch);
                     
                     $result = json_decode($response, true);
                     if (isset($result['secure_url'])) {
@@ -323,7 +322,6 @@ if (isset($_GET['action'])) {
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     $response = curl_exec($ch);
-                    curl_close($ch);
                     
                     $result = json_decode($response, true);
                     if (isset($result['secure_url'])) {

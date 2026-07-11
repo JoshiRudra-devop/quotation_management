@@ -92,7 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
     $response = curl_exec($ch);
-    curl_close($ch);
 
     $result = json_decode($response, true);
     if (!isset($result['secure_url'])) {

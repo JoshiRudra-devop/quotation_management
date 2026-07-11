@@ -50,10 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         $response = curl_exec($ch);
         if ($response === false) {
             $err = curl_error($ch);
-            curl_close($ch);
             json_response(['error' => 'cURL error: ' . $err], 500);
         }
-        curl_close($ch);
         
         $result = json_decode($response, true);
         if (isset($result['error'])) {

@@ -210,10 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response = curl_exec($ch);
                     if ($response === false) {
                         $err = curl_error($ch);
-                        curl_close($ch);
                         return ['error' => 'cURL error: ' . $err];
                     }
-                    curl_close($ch);
                     $result = json_decode($response, true);
                     if (isset($result['error'])) {
                         return ['error' => 'Cloudinary error: ' . ($result['error']['message'] ?? 'Unknown API error')];
