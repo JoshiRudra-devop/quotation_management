@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // one by PHP's session lock) sees it already used and bails out instead of re-inserting.
     if (!consume_form_token('add_product', $_POST['form_token'] ?? '')) {
         flash_set('This product was already added.', 'info');
-        header('Location: home.php');
+        header('Location: home.php#products');
         exit();
     }
 
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     flash_set('Product added successfully!', 'success');
-    header('Location: home.php');
+    header('Location: home.php#products');
     exit();
 }
 
@@ -282,7 +282,7 @@ $formToken = new_form_token('add_product');
   <div class="main-content">
 
 <div style="max-width: 600px; margin: 0 auto; padding: 0 15px;">
-  <button type="button" class="btn-text-back" onclick="window.location.href='home.php'">← Back to Dashboard</button>
+  <button type="button" class="btn-text-back" onclick="window.location.href='home.php#products'">← Back to Products</button>
 </div>
 <div class="setup-container form-container" style="margin-top: 15px;">
   <div class="form-header">

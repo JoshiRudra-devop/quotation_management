@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Guards against a double-click or resubmission inserting the same company twice.
     if (!consume_form_token('add_company', $_POST['form_token'] ?? '')) {
         flash_set('This company was already added.', 'info');
-        header('Location: home.php');
+        header('Location: home.php#companies');
         exit();
     }
 
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     flash_set('Company added successfully!', 'success');
-    header('Location: home.php');
+    header('Location: home.php#companies');
     exit();
 }
 
@@ -201,7 +201,7 @@ $formToken = new_form_token('add_company');
   <div class="main-content">
 
 <div style="max-width: 600px; margin: 0 auto; padding: 0 15px;">
-  <button type="button" class="btn-text-back" onclick="window.location.href='home.php'">← Back to Dashboard</button>
+  <button type="button" class="btn-text-back" onclick="window.location.href='home.php#companies'">← Back to Companies</button>
 </div>
 <div class="setup-container form-container" style="margin-top: 15px;">
   <div class="form-header">
@@ -234,7 +234,7 @@ $formToken = new_form_token('add_company');
     </div>
 
     <div class="actions">
-      <button type="button" class="btn btn-secondary" onclick="window.location.href='home.php'">Cancel</button>
+      <button type="button" class="btn btn-secondary" onclick="window.location.href='home.php#companies'">Cancel</button>
       <button type="submit" class="btn btn-primary" id="companySubmitBtn">Save Company</button>
     </div>
   </form>
