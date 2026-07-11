@@ -207,21 +207,6 @@ window.addEventListener('load', () => {
     }
 });
 
-// Also trigger the loader when user clicks links to navigate
-document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('a:not([href^="#"]):not([href^="javascript"]):not([target="_blank"])');
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            if (!e.defaultPrevented) {
-                const loader = document.getElementById('globalSplashLoader');
-                if (loader) {
-                    loader.style.opacity = '1';
-                    loader.style.visibility = 'visible';
-                }
-            }
-        });
-    });
-});
 </script>
 
 <style>
