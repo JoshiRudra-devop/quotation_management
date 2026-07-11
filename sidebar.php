@@ -104,10 +104,10 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Premium radial gradient for depth */
-  background: radial-gradient(circle at center, rgba(45,212,191,0.15) 0%, rgba(7,10,10,0.9) 70%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Premium radial gradient for depth - Reduced opacity */
+  background: radial-gradient(circle at center, rgba(45,212,191,0.10) 0%, rgba(7,10,10,0.60) 70%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,7 +117,7 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 html.light-mode .loader-overlay {
-    background: radial-gradient(circle at center, rgba(45,212,191,0.15) 0%, rgba(255,255,255,0.9) 70%);
+    background: radial-gradient(circle at center, rgba(45,212,191,0.10) 0%, rgba(255,255,255,0.60) 70%);
 }
 
 /* 2. Absolute Centered Container Box */
@@ -218,6 +218,7 @@ window.addEventListener('load', () => {
     opacity: 1 !important;
     visibility: visible !important;
     transition: none;
+    pointer-events: none !important; /* Ensure it doesn't block taps while dragging */
 }
 .loader-overlay.ptr-dragging .loading-logo {
     animation: none !important;
@@ -252,9 +253,6 @@ window.addEventListener('load', () => {
             if (window.scrollY === 0) {
                 startY = e.touches[0].clientY;
                 isPulling = true;
-                splashOverlay.classList.add('ptr-dragging');
-                logoContainer.style.transition = 'none';
-                logoContainer.style.transform = `translateY(calc(-50vh - 60px))`; // Hide above screen
             }
         }, { passive: true });
 
@@ -265,6 +263,12 @@ window.addEventListener('load', () => {
 
             if (dragDistance > 0 && window.scrollY === 0) {
                 if (e.cancelable) e.preventDefault(); // Prevent native scroll bounce
+                
+                // Add dragging class only when actually moving down
+                if (!splashOverlay.classList.contains('ptr-dragging')) {
+                    splashOverlay.classList.add('ptr-dragging');
+                    logoContainer.style.transition = 'none';
+                }
                 
                 // Pull down logo from top of screen with organic stretching scale
                 const pullHeight = dragDistance * 0.7;
