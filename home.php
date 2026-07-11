@@ -1370,8 +1370,10 @@ $con->close();
                 QT.debounce(searchByCompany, 280));
 
             // Handle hash-based tab navigation from bottom nav
-            if (window.location.hash === '#quotations') switchTab('recent');
+            if (window.location.hash === '#quotations' || window.location.hash === '#recent') switchTab('recent');
             if (window.location.hash === '#companies') switchTab('companies');
+            if (window.location.hash === '#products') switchTab('products');
+            if (window.location.hash === '#bycompany') switchTab('bycompany');
 
             <?php if (empty($format_pref)): ?>
             const introModal = document.getElementById('formatIntroModal');
