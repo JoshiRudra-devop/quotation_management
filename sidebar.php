@@ -104,9 +104,10 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--bg, rgba(7, 10, 10, 0.85));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Premium radial gradient for depth */
+  background: radial-gradient(circle at center, rgba(45,212,191,0.15) 0%, rgba(7,10,10,0.9) 70%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -116,7 +117,7 @@ $_meta_crumb  = $page_meta[$current_page]['crumb']  ?? '';
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 html.light-mode .loader-overlay {
-    background-color: rgba(255, 255, 255, 0.85);
+    background: radial-gradient(circle at center, rgba(45,212,191,0.15) 0%, rgba(255,255,255,0.9) 70%);
 }
 
 /* 2. Absolute Centered Container Box */
@@ -133,8 +134,23 @@ html.light-mode .loader-overlay {
   height: 100%;
   opacity: 0;
   color: var(--teal);
+  filter: drop-shadow(0 0 12px rgba(45,212,191,0.8)); /* Neon glow effect */
   animation: highSpeedLoop 0.6s infinite steps(1);
 }
+
+/* Outer Spinning Glow Ring */
+.loader-ring {
+    position: absolute;
+    top: -15px; left: -15px; right: -15px; bottom: -15px;
+    border: 3px solid rgba(45, 212, 191, 0.1);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: ptrSpin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(45,212,191,0.5));
+}
+@keyframes ptrSpin { 100% { transform: rotate(360deg); } }
 
 /* 4. Sequential 0.1s Step Delays for 6 Alternating Icons */
 .loading-logo:nth-child(1) { animation-delay: 0.0s; }
@@ -156,6 +172,7 @@ html.light-mode .loader-overlay {
 
 <div class="loader-overlay" id="globalSplashLoader">
   <div class="logo-loader-container">
+    <div class="loader-ring"></div>
     <svg class="loading-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
     </svg>
@@ -222,8 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
     opacity: 0;
 }
 /* Show only the Home icon while dragging down */
-.loader-overlay.ptr-dragging .loading-logo:nth-child(1) {
-    opacity: 1;
+.loader-overlay.ptr-dragging .loading-logo:nth-child(2) {
+    opacity: 1; /* Home icon is technically the 2nd child now due to loader-ring */
+}
+/* Hide the spinning ring while physically dragging */
+.loader-overlay.ptr-dragging .loader-ring {
+    opacity: 0;
+    animation: none;
 }
 </style>
 <script>
@@ -259,9 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dragDistance > 0 && window.scrollY === 0) {
                 if (e.cancelable) e.preventDefault(); // Prevent native scroll bounce
                 
-                // Pull down logo from top of screen
+                // Pull down logo from top of screen with organic stretching scale
                 const pullHeight = dragDistance * 0.7;
-                logoContainer.style.transform = `translateY(calc(-50vh - 60px + ${pullHeight}px))`;
+                const dynamicScale = Math.min(1.2, 0.4 + (dragDistance / 250)); // Scale from small to large
+                logoContainer.style.transform = `translateY(calc(-50vh - 60px + ${pullHeight}px)) scale(${dynamicScale})`;
             }
         }, { passive: false });
 
@@ -289,9 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 splashOverlay.style.opacity = '1';
                 splashOverlay.style.visibility = 'visible';
                 
-                // Smoothly snap the logo container to the center of the screen
-                logoContainer.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                logoContainer.style.transform = 'translateY(0)';
+                // Smoothly snap the logo container to the center of the screen with a satisfying bounce
+                logoContainer.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                logoContainer.style.transform = 'translateY(0) scale(1)';
                 
                 setTimeout(() => {
                     window.location.reload();
@@ -301,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 splashOverlay.classList.remove('ptr-dragging');
                 splashOverlay.style.opacity = '0';
                 splashOverlay.style.visibility = 'hidden';
-                logoContainer.style.transform = 'translateY(0)';
+                logoContainer.style.transform = 'translateY(0) scale(1)';
             }
         });
     });
