@@ -37,26 +37,26 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
 :root.light-mode,
 html.light-mode {
     /* Neutrals (light mode) */
-    --bg:           #edf7f5 !important;
-    --surface:      #ffffff !important;
-    --surface2:     #ffffff !important;
-    --surface3:     #f4fafa !important;
-    --surface4:     #e8f4f2 !important;
-    --border:       #ccfbf1 !important;
-    --text:         #022c22 !important;
-    --text-muted:   #0f766e !important;
-    --text-faint:   #5eead4 !important;
-    --teal-border:  #99f6e4 !important;
-    --shadow-card:  var(--shadow-md) !important;
+    --bg:           #F0F7F6 !important;
+    --surface:      #FFFFFF !important;
+    --surface2:     #FFFFFF !important;
+    --surface3:     #E8F5F3 !important;
+    --surface4:     #E0F2F1 !important;
+    --border:       #B2DFDB !important;
+    --text:         #0F172A !important;
+    --text-muted:   #475569 !important;
+    --text-faint:   #94A3B8 !important;
+    --teal-border:  #B2DFDB !important;
+    --shadow-card:  var(--shadow-sm) !important; /* Calmer shadows */
 
-    --bg-gradient:  linear-gradient(135deg, #edf7f5 0%, #e8f4f2 100%) !important;
+    --bg-gradient:  linear-gradient(135deg, #F0F7F6 0%, #E8F5F3 100%) !important;
     --card-gradient: var(--surface) !important;
 
-    /* Accent (light mode) */
-    --teal: #045c4a !important; /* Dark Green from user screenshot */
-    --teal-hover: #014d40 !important; 
-    --teal-dim: rgba(4, 92, 74, 0.12) !important;
-    --teal-glow: rgba(4, 92, 74, 0.15) !important;
+    /* Accent (light mode - matches exact image) */
+    --teal: #00695C !important;
+    --teal-hover: #004D40 !important; 
+    --teal-dim: #D1ECE9 !important;
+    --teal-glow: rgba(0, 105, 92, 0.15) !important;
 
     /* Shadow elevation ladder (light mode) */
     --shadow-xs: 0 1px 2px rgba(4, 92, 74,.04) !important;
@@ -72,7 +72,7 @@ html.light-mode body {
     background-attachment: fixed !important;
 }
 
-/* Glassmorphism Defaults */
+/* Solid UI Defaults (Corporate Theme) */
 html.light-mode .stat-card,
 html.light-mode .qt-card,
 html.light-mode .product-container,
@@ -81,11 +81,11 @@ html.light-mode .modal-content,
 html.light-mode .form-container,
 html.light-mode .tab-content.active,
 html.light-mode .sidebar {
-    background: rgba(255, 255, 255, 0.75) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     border: 1px solid var(--border) !important;
-    box-shadow: 0 8px 32px 0 rgba(4, 92, 74, 0.05) !important;
+    box-shadow: 0 2px 10px rgba(0, 105, 92, 0.06) !important;
 }
 
 /* Header completely solid dark green */
@@ -492,11 +492,11 @@ html.light-mode body {
 }
 
 html.light-mode .app-topbar {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.9) 0%, rgba(13, 148, 136, 0.95) 100%) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25) !important;
+    background: var(--teal) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 html.light-mode .topbar-page-title {
@@ -522,11 +522,11 @@ html.light-mode .topbar-icon-btn:hover {
 }
 
 html.light-mode .bottom-nav {
-    background: rgba(255, 255, 255, 0.6) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 -4px 30px rgba(4, 92, 74, 0.08) !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04) !important;
 }
 
 html.light-mode .bnav-item {
@@ -859,7 +859,7 @@ html.light-mode .form-action-bar-new {
         height: 180px !important;
     }
 }
-/* Liquid Glass Button Hover Effects */
+/* Solid Corporate Button Hover Effects */
 html.light-mode .add-btn,
 html.light-mode .btn-action,
 html.light-mode .save-btn,
@@ -869,11 +869,12 @@ html.light-mode .bnav-center-ring,
 html.light-mode .form-action-btn {
     position: relative;
     overflow: hidden;
-    background: rgba(4, 92, 74, 0.85) !important;
+    background: var(--teal) !important;
     color: white !important;
-    border: 1px solid rgba(255,255,255,0.2) !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: all 0.2s ease !important;
 }
 
 html.light-mode .add-btn:hover,
@@ -883,44 +884,19 @@ html.light-mode .login-btn:hover,
 html.light-mode .qt-open-btn:hover,
 html.light-mode .bnav-center-ring:hover,
 html.light-mode .form-action-btn:hover {
-    background: rgba(4, 92, 74, 0.85) !important;
-}
-
-html.light-mode .add-btn::before,
-html.light-mode .btn-action::before,
-html.light-mode .save-btn::before,
-html.light-mode .login-btn::before,
-html.light-mode .qt-open-btn::before,
-html.light-mode .bnav-center-ring::before,
-html.light-mode .form-action-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 50%; height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    transition: all 0.6s ease;
-}
-
-html.light-mode .add-btn:hover::before,
-html.light-mode .btn-action:hover::before,
-html.light-mode .save-btn:hover::before,
-html.light-mode .login-btn:hover::before,
-html.light-mode .qt-open-btn:hover::before,
-html.light-mode .bnav-center-ring:hover::before,
-html.light-mode .form-action-btn:hover::before {
-    left: 200%;
+    background: var(--teal-hover) !important;
+    box-shadow: 0 4px 12px rgba(0, 105, 92, 0.2) !important;
 }
 
 /* Main Container Wrapper */
 html.light-mode .main-content {
-    background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-radius: 16px !important;
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 12px !important;
     padding: 24px !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 10px 40px rgba(4, 92, 74, 0.08) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 20px rgba(0, 105, 92, 0.04) !important;
     margin: 24px 24px 100px 24px !important; /* Bottom margin for nav bar, side margins for breathing room */
     max-width: none !important;
     width: calc(100% - 48px) !important; /* Exactly 100% minus the left/right 24px margins */

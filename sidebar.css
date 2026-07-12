@@ -9,24 +9,24 @@
    see theme.css header comment).
    ══════════════════════════════════ */
 :root {
-    /* Accent (dark mode defaults - cyan/teal palette) */
-    --teal: #2dd4bf; 
-    --teal-hover: #5eead4;
-    --teal-dim: rgba(45, 212, 191, 0.12);
-    --teal-glow: rgba(45, 212, 191, 0.15);
+    /* Accent (dark mode defaults - Mint Green palette) */
+    --teal: #14B8A6; 
+    --teal-hover: #0D9488;
+    --teal-dim: rgba(20, 184, 166, 0.12);
+    --teal-glow: rgba(20, 184, 166, 0.15);
 
-    /* Neutrals (dark mode defaults - pure black/grey palette) */
-    --bg:           #09090b; /* Pure dark / almost black */
-    --surface:      #121212; /* Elevated surface */
-    --surface2:     #1a1a1a;
-    --surface3:     #27272a;
-    --surface4:     #3f3f46;
-    --border:       #27272a;
-    --text:         #f4f4f5;
-    --text-muted:   #a1a1aa;
-    --text-faint:   #52525b;
-    --teal-border:  rgba(45, 212, 191, 0.2);
-    --bg-gradient:  linear-gradient(135deg, #09090b 0%, #121212 100%);
+    /* Neutrals (dark mode defaults - Deep Forest palette) */
+    --bg:           #041512;
+    --surface:      #0a231f;
+    --surface2:     #10302b;
+    --surface3:     #163c35;
+    --surface4:     #1c4a41;
+    --border:       #163c35;
+    --text:         #ccfbf1;
+    --text-muted:   #94a3b8;
+    --text-faint:   #475569;
+    --teal-border:  rgba(20, 184, 166, 0.2);
+    --bg-gradient:  linear-gradient(135deg, #041512 0%, #0a231f 100%);
     --card-gradient: var(--surface);
 
     /* Semantic colors */
@@ -45,10 +45,10 @@
     --topbar-h:     72px;
     --bnav-h:       64px;
 
-    /* Radius scale */
-    --radius-sm:    8px;
-    --radius:       10px;
-    --radius-lg:    14px;
+    /* Radius scale (sharper, corporate look) */
+    --radius-sm:    4px;
+    --radius:       6px;
+    --radius-lg:    10px;
     --radius-full:  999px;
 
     /* Spacing scale (4/8px rhythm) */
