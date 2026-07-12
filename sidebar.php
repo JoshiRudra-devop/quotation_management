@@ -351,6 +351,27 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ═══════════════════════════════════════════
      TOP TITLE BAR  (breadcrumb + user actions)
      ═══════════════════════════════════════════ -->
+<?php 
+// Generate dynamic breadcrumb if not explicitly set
+if (!isset($_meta_crumb)) {
+    $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
+    $pageNameMap = [
+        'home.php' => 'Dashboard',
+        'add-company.php' => 'Add Customer',
+        'add-Product.php' => 'Add Product',
+        'form2.php' => 'New Quotation',
+        'contact.php' => 'Contact Us',
+        'settings.php' => 'Settings',
+        'premium.php' => 'Premium Plans'
+    ];
+    $mappedName = $pageNameMap[$currentPage] ?? ucfirst(str_replace('.php', '', $currentPage));
+    if ($mappedName) {
+        $_meta_crumb = "Home / " . $mappedName;
+    } else {
+        $_meta_crumb = "Home";
+    }
+}
+?>
 <header class="app-topbar" id="appTopbar">
     <div class="topbar-left">
         <?php if (!empty($_show_back_btn)): ?>
