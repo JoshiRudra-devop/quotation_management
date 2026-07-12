@@ -61,9 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   color: var(--text, #ccc);
   box-shadow: var(--shadow-card, 0 4px 20px rgba(45,212,191,0.12));
 }
-.form-header { text-align:center; margin-bottom:40px; }
-.form-header h1 { font-family: var(--font-head); color: var(--teal); font-size:28px; font-weight:700; margin-bottom:10px; }
-.form-header p { color: var(--text-muted, #aaa); font-size: 15px; }
+/* .form-header styles are now global */
 
 .contact-info {
     display: flex;
@@ -116,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 @media(max-width: 600px) {
   .setup-container { padding: 20px; margin: 20px auto; width: 95%; }
-  .form-header h1 { font-size: 24px; }
+  /* .form-header h1 responsive styles inherited globally */
   .contact-info { flex-direction: column; }
 }
 </style>

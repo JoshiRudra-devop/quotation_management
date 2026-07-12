@@ -24,8 +24,11 @@
    ────────────────────────────────── */
 #qt-toast-container {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 48px);
+    max-width: 800px;
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -37,14 +40,14 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 16px;
-    border-radius: 10px;
+    padding: 14px 20px;
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
-    min-width: 260px;
-    max-width: 380px;
-    box-shadow: 0 8px 28px rgba(0,0,0,.5);
+    width: 100%;
+    max-width: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,.15);
     pointer-events: auto;
     animation: qt-toast-in .28s cubic-bezier(.4,0,.2,1) forwards;
     border: 1px solid transparent;
@@ -86,12 +89,12 @@
 }
 
 @keyframes qt-toast-in {
-    from { opacity: 0; transform: translateX(40px); }
-    to   { opacity: 1; transform: translateX(0); }
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes qt-toast-out {
-    from { opacity: 1; transform: translateX(0); max-height: 80px; margin-bottom: 0; }
-    to   { opacity: 0; transform: translateX(40px); max-height: 0; margin-bottom: -10px; }
+    from { opacity: 1; transform: translateY(0); max-height: 80px; margin-bottom: 0; }
+    to   { opacity: 0; transform: translateY(-30px); max-height: 0; margin-bottom: -10px; }
 }
 
 /* ──────────────────────────────────

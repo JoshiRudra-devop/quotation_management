@@ -718,3 +718,25 @@ body.tray-open { overflow: hidden; }
     body { padding-bottom: calc(var(--bnav-h) + env(safe-area-inset-bottom)); }
     .bottom-nav { padding-bottom: env(safe-area-inset-bottom); }
 }
+
+/* Dark Mode Section Headers */
+.top-bar, .section-header, .form-header {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar h1, .section-header .section-title, .form-header h1, .form-header h2 {
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

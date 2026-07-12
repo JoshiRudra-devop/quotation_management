@@ -134,9 +134,7 @@ $_show_back_btn = true;
   color: var(--text, #ccc);
   box-shadow: var(--shadow-card, 0 4px 20px rgba(45,212,191,0.12));
 }
-.form-header { text-align:center; margin-bottom:40px; }
-.form-header h1 { font-family: var(--font-head); color: var(--teal); font-size:28px; font-weight:700; margin-bottom:10px; }
-.form-header p { color: var(--text-muted, #aaa); }
+/* .form-header styles are now global */
 .form-group { margin-bottom:20px; }
 .form-group label { display:block; margin-bottom:8px; color: var(--teal); font-weight:600; }
 .form-group input, .form-group textarea {

@@ -163,16 +163,7 @@ $_show_back_btn = true;
   box-shadow: var(--shadow-card, 0 4px 20px rgba(45,212,191,0.12));
 }
 
-/* Header */
-.form-header { text-align:center; margin-bottom:25px; }
-.form-header h1 {
-  font-family: var(--font-head);
-  color: var(--teal);
-  font-size:22px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-.form-header p { color: var(--text-muted, #aaa); font-size:14px; }
+/* Header (Handled globally in theme.css / sidebar.css) */
 
 /* Form */
 .form-group { margin-bottom:15px; }

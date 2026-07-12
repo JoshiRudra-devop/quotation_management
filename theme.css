@@ -910,3 +910,30 @@ html.light-mode .main-content {
         border-radius: 12px !important;
     }
 }
+
+/* Corporate Section Headers (Light Green Blocks) */
+html.light-mode .top-bar,
+html.light-mode .section-header,
+html.light-mode .form-header {
+    background: #E8F5F3 !important;
+    border: 1px solid #B2DFDB !important;
+    border-radius: 8px !important;
+    padding: 16px 20px !important;
+    margin-bottom: 24px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+html.light-mode .top-bar h1,
+html.light-mode .section-header .section-title,
+html.light-mode .form-header h1,
+html.light-mode .form-header h2 {
+    color: var(--teal) !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
