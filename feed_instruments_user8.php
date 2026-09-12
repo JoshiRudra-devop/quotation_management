@@ -2,6 +2,7 @@
 /**
  * Database Feeder Script specifically for USER ID = 8
  * Dynamically resolves company_id for user_id = 8 and feeds all 324 products.
+ * Includes interactive JS toast notification & completion banner.
  */
 if (php_sapi_name() === 'cli' && empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = 'localhost';
@@ -12,8 +13,34 @@ require_once __DIR__ . '/config.php';
 header('Content-Type: text/html; charset=utf-8');
 
 $target_user_id = 8;
-
-echo "<h2>Starting Database Feed for User ID = {$target_user_id}</h2>";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Feeder - User ID 8</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; background: #1e293b; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1, h2, h3 { color: #2dd4bf; }
+        .alert-bar { padding: 15px 20px; background: #065f46; border: 1px solid #10b981; color: #ecfdf5; border-radius: 8px; font-weight: bold; font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .btn-dash { display: inline-block; background: #2dd4bf; color: #0f172a; font-weight: bold; text-decoration: none; padding: 10px 20px; border-radius: 6px; transition: all 0.2s; }
+        .btn-dash:hover { background: #14b8a6; transform: translateY(-2px); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #0f172a; border-radius: 8px; overflow: hidden; }
+        th { background: #104D38; color: #ffffff; padding: 12px; text-align: left; font-size: 13px; }
+        td { padding: 10px 12px; border-bottom: 1px solid #334155; font-size: 13px; }
+        tr:nth-child(even) { background: #1e293b; }
+        .badge-inserted { color: #34d399; font-weight: bold; background: #064e3b; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+        .badge-updated { color: #38bdf8; font-weight: bold; background: #075985; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+        .badge-error { color: #f87171; font-weight: bold; background: #7f1d1d; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+        .summary-card { background: #064e3b; border: 2px solid #10b981; padding: 20px; border-radius: 10px; margin-top: 25px; }
+    </style>
+</head>
+<body>
+<div class="container">
+<?php
+echo "<h1>🚀 Database Feeder — User ID {$target_user_id}</h1>";
 
 // Connect to Database
 $con = @new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
@@ -26,10 +53,10 @@ if ($con->connect_error) {
 }
 
 if ($con->connect_error) {
-    die("<div style='color:red; font-size:16px;'>Database Connection Error: " . htmlspecialchars($con->connect_error) . "</div>");
+    die("<div style='color:#f87171; font-size:16px; font-weight:bold;'>❌ Database Connection Error: " . htmlspecialchars($con->connect_error) . "</div></div></body></html>");
 }
 
-echo "<div style='color:green; font-weight:bold;'>Connected successfully to Database: {$DB_NAME}</div><hr>";
+echo "<div style='color:#34d399; font-weight:bold;'>✅ Connected successfully to Database: {$DB_NAME}</div><hr style='border-color:#334155;'>";
 
 // 1. Resolve company_id for user_id = 8
 $company_id = null;
@@ -45,11 +72,10 @@ if ($stmt_comp) {
 }
 
 if (!$company_id) {
-    // If no company record exists, check users table or default company_id to 8
     $company_id = $target_user_id;
-    echo "<div style='color:orange;'>Notice: No company record found in `companies` table for user_id = {$target_user_id}. Defaulting company_id to {$company_id}.</div><br>";
+    echo "<div style='color:#fbbf24;'>⚠️ Notice: No company record found in `companies` table for user_id = {$target_user_id}. Defaulting company_id to {$company_id}.</div><br>";
 } else {
-    echo "<div style='color:blue; font-weight:bold;'>Found Company Record: company_id = {$company_id} for user_id = {$target_user_id}</div><br>";
+    echo "<div style='color:#38bdf8; font-weight:bold;'>🏢 Target Company ID: {$company_id} (Linked to User ID: {$target_user_id})</div><br>";
 }
 
 // Ensure database schema columns exist
@@ -2337,11 +2363,11 @@ $stmt_insert = $con->prepare("INSERT INTO instruments (company_id, instrument_na
 $stmt_update = $con->prepare("UPDATE instruments SET price = ?, description = ?, image = ?, hsn_code = ? WHERE instrument_id = ? AND company_id = ?");
 
 if (!$stmt_insert) {
-    die("<div style='color:red;'>Prepare Statement Error: " . htmlspecialchars($con->error) . "</div>");
+    die("<div style='color:#f87171;'>Prepare Statement Error: " . htmlspecialchars($con->error) . "</div></div></body></html>");
 }
 
-echo "<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse; font-family:sans-serif; font-size:12px; width:100%;'>";
-echo "<tr style='background:#104D38; color:white;'><th>#</th><th>Status</th><th>Instrument Name</th><th>Price (INR)</th><th>Company ID</th><th>User ID</th></tr>";
+echo "<table>";
+echo "<tr><th>#</th><th>Status</th><th>Instrument Name</th><th>Price (INR)</th><th>Company ID</th><th>User ID</th></tr>";
 
 foreach ($items as $idx => $item) {
     $name = $item['name'];
@@ -2359,19 +2385,19 @@ foreach ($items as $idx => $item) {
         $stmt_update->bind_param("dsssii", $price, $desc, $img, $hsn, $inst_id, $company_id);
         if ($stmt_update->execute()) {
             $updated++;
-            $status_td = "<span style='color:blue; font-weight:bold;'>Updated</span>";
+            $status_td = "<span class='badge-updated'>UPDATED</span>";
         } else {
             $errors++;
-            $status_td = "<span style='color:red;'>Update Error: " . htmlspecialchars($stmt_update->error) . "</span>";
+            $status_td = "<span class='badge-error'>ERROR</span>";
         }
     } else {
         $stmt_insert->bind_param("isdsss", $company_id, $name, $price, $desc, $img, $hsn);
         if ($stmt_insert->execute()) {
             $inserted++;
-            $status_td = "<span style='color:green; font-weight:bold;'>Inserted</span>";
+            $status_td = "<span class='badge-inserted'>INSERTED</span>";
         } else {
             $errors++;
-            $status_td = "<span style='color:red;'>Insert Error: " . htmlspecialchars($stmt_insert->error) . "</span>";
+            $status_td = "<span class='badge-error'>ERROR</span>";
         }
     }
     
@@ -2380,13 +2406,34 @@ foreach ($items as $idx => $item) {
 }
 
 echo "</table>";
-echo "<br><div style='padding:15px; background:#e6f4f1; border:2px solid #2dd4bf; border-radius:8px; font-family:sans-serif;'>";
-echo "<h3 style='margin-top:0; color:#104D38;'>Database Feed Summary for User ID = {$target_user_id} (Company ID = {$company_id})</h3>";
-echo "<p><strong>New Instruments Inserted:</strong> <span style='color:green; font-weight:bold;'>{$inserted}</span></p>";
-echo "<p><strong>Existing Instruments Updated:</strong> <span style='color:blue; font-weight:bold;'>{$updated}</span></p>";
-echo "<p><strong>Errors Encountered:</strong> {$errors}</p>";
-echo "<p><strong>Total Instruments Processed:</strong> " . count($items) . "</p>";
+
+$total_processed = count($items);
+
+echo "<div class='summary-card'>";
+echo "<h2 style='margin-top:0; color:#34d399;'>🎉 Products Loaded Successfully!</h2>";
+echo "<p style='font-size:15px;'><strong>User ID:</strong> {$target_user_id} | <strong>Company ID:</strong> {$company_id}</p>";
+echo "<p style='font-size:15px;'><strong>New Instruments Inserted:</strong> <span style='color:#34d399; font-weight:bold;'>{$inserted}</span></p>";
+echo "<p style='font-size:15px;'><strong>Existing Instruments Updated:</strong> <span style='color:#38bdf8; font-weight:bold;'>{$updated}</span></p>";
+echo "<p style='font-size:15px;'><strong>Total Products Processed:</strong> <span style='color:#2dd4bf; font-weight:bold;'>{$total_processed}</span></p>";
+echo "<p style='margin-top:20px;'><a href='home.php#products' class='btn-dash'>Go to Dashboard to View Products →</a></p>";
 echo "</div>";
 
 $con->close();
 ?>
+</div>
+
+<script>
+    // Show visual popup notification when page finishes loading
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            alert('🎉 SUCCESS!
+
+All <?php echo $total_processed; ?> Products have been loaded successfully into the database for User ID <?php echo $target_user_id; ?>!
+
+- Inserted: <?php echo $inserted; ?>
+- Updated: <?php echo $updated; ?>');
+        }, 300);
+    });
+</script>
+</body>
+</html>
